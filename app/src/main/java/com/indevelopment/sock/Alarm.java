@@ -51,6 +51,7 @@ public class Alarm {
         intent.putExtra(RuleAlarm.NOTIFICATION_NAME, rule.getRuleName());
         intent.putExtra(RuleAlarm.NOTIFICATION_DETAIL, rule.getStartRule());
         intent.putExtra(RuleAlarm.REPEAT, rule.isRepeating());
+        intent.putExtra(RuleAlarm.ACTIONS, rule.getAllActions());
         intent.putExtra(AddNewRuleActivity.RULE_INDEX, RuleData.rules.indexOf(rule));
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
