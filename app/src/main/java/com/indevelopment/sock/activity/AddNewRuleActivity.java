@@ -320,11 +320,16 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
             result = p.waitFor();
         } catch (InterruptedException e) {
             e.printStackTrace();
+            Toast.makeText(this, "You need to grant root access", Toast.LENGTH_SHORT).show();
             return false;
         }
 
-        Toast.makeText(this, "You need to grant root access", Toast.LENGTH_SHORT).show();
-        return result == 0;
+        if(result != 0) {
+            Toast.makeText(this, "You need to grant root access", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
+        return true;
     }
 
     private void showTimePickerDialog(int editTextId) {
