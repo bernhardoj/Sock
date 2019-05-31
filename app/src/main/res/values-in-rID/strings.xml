@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_feedback">Kirim umpan balik</string>
+    <string name="action_remove">Hapus</string>
+    <string name="action_settings">Pengaturan</string>
+    <string name="action_done">Selesai</string>
+    <string name="dark_mode_title">Mode gelap</string>
+    <string name="empty_rule_string">Aturanmu kosong</string>
+    <string name="feedback_header">Umpan balik</string>
+    <string name="input_your_rule_name">Nama aturan</string>
+    <string name="new_rule_activity">Aturan Baru</string>
+    <string name="notification_header">Notifikasi</string>
+    <string name="repeat_alarm">Ulang</string>
+    <string name="required_field_text">Kolom ini harus diisi</string>
+    <string name="rule_actions">AKSI</string>
+    <string name="rule_day">Hari</string>
+    <string name="rule_empty_image">Gambar aturan kosong</string>
+    <string name="rule_lists_activity">Daftar Aturan</string>
+    <string name="startTime_hint">Waktu</string>
+    <string name="title_activity_settings">Pengaturan</string>
+    <string name="edit_rule_activity">Ubah Aturan</string>
+    <string name="customize_header">Kustomisasi</string>
+    <string name="custom_detail_title">Detail kustommu</string>
+    <string name="rule_set">Aturan %1$s diterapkan</string>
+    <string name="rule_notification_title">%1$s diterapkan</string>
+    <string name="rule_notification_detail">%1$s - Waktu diam</string>
+    <string name="action_mute_all_volume">Mute semua volume</string>
+    <string name="action_shutdown">Matikan perangkat</string>
+    <string name="channel_name">Aturan diterapkan</string>
+    <string name="channel_description">Memberitahukan pengguna bahwa aturan diterapkan</string>
+</resources>

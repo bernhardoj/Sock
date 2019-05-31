@@ -1,0 +1,60 @@
+<resources>
+    <string name="app_name" translatable="false">Sock</string>
+    <string name="input_your_rule_name">Rule name</string>
+    <string name="startTime_hint">Time</string>
+    <string name="rule_actions">ACTIONS</string>
+
+    <string name="empty_rule_string">Your rule is empty</string>
+    <string name="rule_day">Day</string>
+    <string name="repeat_alarm">Repeat</string>
+    <string name="rule_empty_image">Rule empty image</string>
+    <string name="required_field_text">This field is required</string>
+    <string name="rule_set">Rule \"%1$s\" is set</string>
+
+    <string-array name="day_arrays">
+        <item>Sunday</item>
+        <item>Monday</item>
+        <item>Tuesday</item>
+        <item>Wednesday</item>
+        <item>Thursday</item>
+        <item>Friday</item>
+        <item>Saturday</item>
+    </string-array>
+
+    <!--Rule Action-->
+    <string name="action_mute_all_volume">Mute all volume</string>
+    <string name="action_shutdown">Shutdown the device</string>
+
+    <!--Notification-->
+    <string name="channel_name">Rule applied</string>
+    <string name="channel_description">Inform user that the rule is applied</string>
+    <string name="rule_notification_title">%1$s is applied</string>
+    <string name="rule_notification_detail">%1$s - Silent time</string>
+
+    <!--ActionBar Menu-->
+    <string name="action_settings">Settings</string>
+    <string name="action_remove">Remove</string>
+    <string name="action_feedback">Send feedback</string>
+
+    <!--Activity Title-->
+    <string name="title_activity_settings">Settings</string>
+    <string name="rule_lists_activity">Rule Lists</string>
+    <string name="new_rule_activity">New Rule</string>
+    <string name="edit_rule_activity">Edit Rule</string>
+
+    <!-- Preference Titles -->
+    <string name="notification_header">Notification</string>
+    <string name="customize_header">Customize</string>
+    <string name="feedback_header">Feedback</string>
+
+    <!-- Messages Preferences -->
+    <string name="custom_detail_title">Your custom detail</string>
+
+    <!-- Sync Preferences -->
+    <string name="dark_mode_title">Dark mode</string>
+
+    <!--Feedback and Bug Report-->
+    <string name="feedback_bug_report" translatable="false">com.indevelopment@gmail.com</string>
+    <string name="action_done">Done</string>
+
+</resources>

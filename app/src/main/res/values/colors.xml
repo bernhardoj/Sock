@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!--Day Mode Color-->
+    <color name="colorPrimary">#008577</color>
+    <color name="colorPrimaryDark">#00574B</color>
+    <color name="colorAccent">#D81B60</color>
+    <color name="dayModeBackground">#FCFCFC</color>
+    <color name="dayModeColorText">@android:color/black</color>
+    <color name="dayModeTintColor">@color/grey500</color>
+    <color name="dayModeOptionColor">@android:color/white</color>
+    <color name="dayErrorColor">#B00020</color>
+    <color name="daySwitchOnTrackColor">#F2B7CD</color>
+    <color name="daySwitchOffTrackColor">#B0B0B0</color>
+    <color name="daySwitchOffThumbColor">#ECECEC</color>
+
+    <!--Dark Mode Color-->
+    <color name="darkModeColorPrimary">#292929</color>
+    <color name="darkModeColorPrimaryDark">#000000</color>
+    <color name="darkModeColorAccent">@color/colorPrimary</color>
+    <color name="darkModeBackground">#121212</color>
+    <color name="darkModeColorText">@android:color/white</color>
+    <color name="darkModeTintColor">@android:color/white</color>
+    <color name="darkModeOptionColor">#303030</color>
+    <color name="darkErrorColor">#CF6679</color>
+    <color name="darkSwitchOnTrackColor">#0D3632</color>
+    <color name="darkSwitchOffTrackColor">#646567</color>
+    <color name="darkSwitchOffThumbColor">#BABABA</color>
+
+    <color name="grey500">#9E9E9E</color>
+    <color name="grey200">#EEEEEE</color>
+    <color name="grey300">#E0E0E0</color>
+
+</resources>

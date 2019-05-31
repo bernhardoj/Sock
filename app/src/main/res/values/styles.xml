@@ -1,0 +1,113 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <!--Day mode theme-->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="backgroundColor">@color/dayModeBackground</item>
+        <item name="textColor">@color/dayModeColorText</item>
+        <item name="tintColor">@color/dayModeTintColor</item>
+        <item name="optionColor">@color/dayModeOptionColor</item>
+        <item name="android:actionMenuTextColor">@color/dayModeOptionColor</item>
+        <item name="errorColor">@color/dayErrorColor</item>
+        <item name="colorControlHighlight">@color/grey500</item>
+    </style>
+
+    <!--Dark mode theme-->
+    <style name="DarkModeAppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/darkModeColorPrimary</item>
+        <item name="colorPrimaryDark">@color/darkModeColorPrimaryDark</item>
+        <item name="colorAccent">@color/darkModeColorAccent</item>
+        <item name="backgroundColor">@color/darkModeBackground</item>
+        <item name="textColor">@color/darkModeColorText</item>
+        <item name="tintColor">@color/darkModeTintColor</item>
+        <item name="optionColor">@color/darkModeOptionColor</item>
+        <item name="android:actionMenuTextColor">@color/darkModeOptionColor</item>
+        <item name="errorColor">@color/darkErrorColor</item>
+        <item name="colorControlHighlight">@color/grey500</item>
+    </style>
+
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
+    <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <style name="RuleText" parent="TextAppearance.MaterialComponents.Subtitle2">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginTop">20dp</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/textColor</item>
+    </style>
+
+    <style name="ActionsText" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">12dp</item>
+        <item name="android:layout_marginStart">3.5dp</item>
+        <item name="android:layout_marginLeft">3.5dp</item>
+        <item name="android:theme">@style/CustomCheckBox</item>
+        <item name="android:textColor">?attr/textColor</item>
+    </style>
+
+    <style name="Subtitle" parent="TextAppearance.MaterialComponents.Subtitle1">
+        <item name="android:fontFamily">sans-serif</item>
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColor">?attr/textColor</item>
+        <item name="android:textSize">14sp</item>
+    </style>
+
+    <style name="RuleLeftDrawable">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:padding">7dp</item>
+        <item name="android:tint">?attr/tintColor</item>
+    </style>
+
+    <style name="RuleFieldLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:orientation">horizontal</item>
+        <item name="android:layout_marginTop">16dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="RuleEditTextField">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textSize">16sp</item>
+        <item name="android:textColor">?attr/textColor</item>
+        <item name="backgroundTint">?attr/tintColor</item>
+    </style>
+
+    <style name="MaterialTextInputLayout">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:textColorHint">@color/grey500</item>
+        <item name="errorTextAppearance">@style/TextInputLayoutErrorAppearance</item>
+        <item name="android:paddingLeft">5dp</item>
+        <item name="android:paddingRight">5dp</item>
+    </style>
+
+    <style name="TextInputLayoutErrorAppearance" parent="@android:style/TextAppearance">
+        <item name="android:textColor">?attr/errorColor</item>
+        <item name="android:textSize">12sp</item>
+    </style>
+
+    <style name="CustomCheckBox">
+        <item name="colorControlNormal">?attr/tintColor</item>
+    </style>
+
+    <style name="SelectableItemBackground">
+        <item name="colorControlHighlight">@color/grey500</item>
+    </style>
+</resources>

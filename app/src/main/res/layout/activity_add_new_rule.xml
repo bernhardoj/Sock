@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/scrollView"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.AddNewRuleActivity"
+    android:background="?attr/backgroundColor">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical"
+        android:paddingLeft="16dp"
+        android:paddingRight="16dp">
+
+        <LinearLayout style="@style/RuleFieldLayout">
+
+            <ImageView
+                style="@style/RuleLeftDrawable"
+                android:contentDescription="@string/input_your_rule_name"
+                app:srcCompat="@drawable/ic_label_outline_black_24dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/MaterialTextInputLayout"
+                android:id="@+id/ruleName_layout">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/rule_name_edt"
+                    style="@style/RuleEditTextField"
+                    android:hint="@string/input_your_rule_name"
+                    android:inputType="text"
+                    android:maxLength="30" />
+            </com.google.android.material.textfield.TextInputLayout>
+        </LinearLayout>
+
+        <LinearLayout style="@style/RuleFieldLayout">
+
+            <ImageView
+                style="@style/RuleLeftDrawable"
+                android:contentDescription="@string/startTime_hint"
+                app:srcCompat="@drawable/ic_access_time_black_24dp" />
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/MaterialTextInputLayout"
+                android:id="@+id/ruleStart_layout">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/startTime_ed"
+                    style="@style/RuleEditTextField"
+                    android:focusable="false"
+                    android:hint="@string/startTime_hint"
+                    android:inputType="none"
+                    android:longClickable="false"/>
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="–"/>-->
+            <!--<EditText-->
+            <!--android:id="@+id/endTime_ed"-->
+            <!--style="@style/RuleEditTextField"-->
+            <!--android:focusable="false"-->
+            <!--android:hint="@string/startTime_hint"-->
+            <!--android:inputType="none"-->
+            <!--android:longClickable="false"-->
+            <!--tools:ignore="Autofill" -->
+            <!--android:layout_weight="1"/>-->
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/RuleFieldLayout"
+            android:gravity="start">
+
+            <ImageView
+                style="@style/RuleLeftDrawable"
+                android:contentDescription="@string/rule_day"
+                app:srcCompat="@drawable/ic_today_black_24dp" />
+
+            <Spinner
+                android:id="@+id/day_spinner"
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                app:backgroundTint="?attr/textColor"
+                android:layout_marginLeft="1.5dp"
+                android:layout_marginRight="1.5dp"
+                android:popupBackground="?attr/optionColor" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/repeat_cBox"
+            style="@style/ActionsText"
+            android:layout_marginTop="10dp"
+            android:text="@string/repeat_alarm" />
+
+        <TextView
+            android:id="@+id/action_tv"
+            style="@style/RuleText"
+            android:text="@string/rule_actions"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:id="@+id/actions_layout">
+            <CheckBox
+                android:id="@+id/muteAll_cBox"
+                style="@style/ActionsText"
+                android:text="@string/action_mute_all_volume" />
+
+            <CheckBox
+                android:id="@+id/shutDown_cBox"
+                style="@style/ActionsText"
+                android:text="@string/action_shutdown"/>
+        </LinearLayout>
+    </LinearLayout>
+</ScrollView>
