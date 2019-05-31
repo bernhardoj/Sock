@@ -122,7 +122,7 @@ public class Rule implements Parcelable {
     public boolean getActions(int idx) {
         return actions[idx];
     }
-    
+
     public boolean[] getAllActions() {
         return actions;
     }
