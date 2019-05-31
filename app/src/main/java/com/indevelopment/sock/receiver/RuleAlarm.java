@@ -24,6 +24,7 @@ public class RuleAlarm extends BroadcastReceiver {
     public static final String NOTIFICATION_NAME = "NOTIFICATION_NAME";
     public static final String NOTIFICATION_DETAIL = "NOTIFICATION_DETAIL";
     public static final String REPEAT = "REPEAT";
+    public static final String ACTIONS = "ACTIONS";
 
     private static final String CHANNEL_ID = "rule_channel";
     private static final String CUSTOM_DETAIL_PREFERENCE_KEY = "custom_detail";
