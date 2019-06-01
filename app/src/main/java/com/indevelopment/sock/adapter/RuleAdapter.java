@@ -29,7 +29,7 @@ import java.util.List;
 public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> {
 
     public static final float MEDIUM_EMPHASIZE_TEXT = 0.6f;
-    private static final float DAY_HIGH_EMPHASIS_TEXT = 0.87f;
+    private static final float HIGH_EMPHASIS_TEXT = 0.87f;
     private static final float DISABLED_TEXT = 0.38f;
 
     private List<Rule> rules;
@@ -63,7 +63,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> {
         String ruleTime;
         LinearLayout linearLayout;
         int requestCode;
-        float day_alpha = MEDIUM_EMPHASIZE_TEXT;
 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
@@ -84,6 +83,7 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> {
             ruleName_tv.setText(rule.getRuleName());
             ruleTime_tv.setText(ruleTime);
             day_tv.setText(day);
+            day_tv.setAlpha(HIGH_EMPHASIS_TEXT);
             requestCode = rule.getRequestCode();
 
             if (rule.isSwitched()) {
@@ -121,7 +121,6 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> {
                             textColorAttributeId = R.color.darkModeColorText;
                             rule_switch.setTrackTintList(ColorStateList.valueOf
                                     (itemView.getResources().getColor(R.color.darkSwitchOnTrackColor)));
-                            day_alpha = DAY_HIGH_EMPHASIS_TEXT;
                         } else {
                             colorAccentAttributeId = R.color.colorAccent;
                             textColorAttributeId = R.color.dayModeColorText;
@@ -131,9 +130,9 @@ public class RuleAdapter extends RecyclerView.Adapter<RuleAdapter.ViewHolder> {
 
                         ruleName_tv.setTextColor(itemView.getResources().getColor(colorAccentAttributeId));
                         day_tv.setTextColor(itemView.getResources().getColor(textColorAttributeId));
-                        day_tv.setAlpha(day_alpha);
+                        day_tv.setAlpha(HIGH_EMPHASIS_TEXT);
                         ruleTime_tv.setTextColor(itemView.getResources().getColor(textColorAttributeId));
-                        ruleTime_tv.setAlpha(day_alpha);
+                        ruleTime_tv.setAlpha(HIGH_EMPHASIS_TEXT);
 
                         rule_switch.setThumbTintList(ColorStateList.valueOf
                                 (itemView.getResources().getColor(colorAccentAttributeId)));
