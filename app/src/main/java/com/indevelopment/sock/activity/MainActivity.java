@@ -14,6 +14,7 @@ import com.google.android.material.snackbar.Snackbar;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -114,6 +115,7 @@ public class MainActivity extends AppCompatActivity {
             emptyTextLayout.setVisibility(View.VISIBLE);
         } else {
             final RuleAdapter adapter = new RuleAdapter(RuleData.rules, ruleList);
+            ruleList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
             ruleList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             ruleList.setAdapter(adapter);
         }
