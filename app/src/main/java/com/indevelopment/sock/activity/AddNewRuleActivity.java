@@ -125,24 +125,6 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        ruleName_edt.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                ruleName_layout.setError(null);
-                ruleName_layout.setErrorEnabled(false);
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
-
         rule_startTime.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -344,15 +326,11 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 try {
                     String time = String.format(Locale.US, "%02d:%02d", hourOfDay, minute1);
                     rule_time.setText(time);
-                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
-                        rule_time.setBackgroundTintList(ColorStateList.valueOf(Color.GRAY));
-                    } else {
-                        rule_time.setError(null);
-                    }
+                    ruleName_layout.setError(null);
+                    ruleName_layout.setErrorEnabled(false);
                 } catch (NullPointerException np) {
                     Toast.makeText(AddNewRuleActivity.this, "Error, please use send feedback to report the bug!", Toast.LENGTH_SHORT).show();
                 }
-
             }
         }, hour, minute, false);
         timePickerDialog.show();
