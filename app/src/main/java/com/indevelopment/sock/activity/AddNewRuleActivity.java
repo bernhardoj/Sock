@@ -120,7 +120,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 muteAll_cBox.setChecked(rule.getActions(Rule.ACTION_MUTE_ALL));
                 shutDown_cBox.setChecked(rule.getActions(Rule.ACTION_SHUTDOWN));
                 actions[Rule.ACTION_MUTE_ALL] = rule.getActions(Rule.ACTION_MUTE_ALL);
-                actions[Rule.ACTION_SHUTDOWN] = rule.getActions(Rule.ACTION_MUTE_ALL);
+                actions[Rule.ACTION_SHUTDOWN] = rule.getActions(Rule.ACTION_SHUTDOWN);
                 repeat_cBox.setChecked(rule.isRepeating());
             }
         }
