@@ -275,6 +275,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 if (shutDown_cBox.isChecked()) {
                     if (isRootGiven()) {
                         actions[Rule.ACTION_SHUTDOWN] = true;
+                        action_tv.setError(null);
                     } else {
                         shutDown_cBox.setChecked(false);
                         actions[Rule.ACTION_SHUTDOWN] = false;
