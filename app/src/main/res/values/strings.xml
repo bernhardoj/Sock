@@ -23,7 +23,7 @@
 
     <!--Rule Action-->
     <string name="action_mute_all_volume">Mute all volume</string>
-    <string name="action_shutdown">Shutdown the device</string>
+    <string name="action_shutdown">Shutdown the device \n*ROOT*</string>
 
     <!--Notification-->
     <string name="channel_name">Rule applied</string>
