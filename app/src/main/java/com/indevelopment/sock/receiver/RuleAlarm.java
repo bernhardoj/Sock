@@ -70,7 +70,7 @@ public class RuleAlarm extends BroadcastReceiver {
 
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }
-        
+
         if(ruleActions[Rule.ACTION_SHUTDOWN]) {
             try {
                 Runtime.getRuntime().exec(new String[]{ "su", "-c", "reboot -p" });
