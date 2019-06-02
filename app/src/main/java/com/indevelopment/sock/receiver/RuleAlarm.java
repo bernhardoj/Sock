@@ -19,6 +19,9 @@ import com.indevelopment.sock.activity.AddNewRuleActivity;
 import com.indevelopment.sock.activity.MainActivity;
 import com.indevelopment.sock.adapter.RuleAdapter;
 import com.indevelopment.sock.data.RuleData;
+import com.indevelopment.sock.model.Rule;
+
+import java.io.IOException;
 
 public class RuleAlarm extends BroadcastReceiver {
     public static final String NOTIFICATION_NAME = "NOTIFICATION_NAME";
@@ -33,37 +36,48 @@ public class RuleAlarm extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+        boolean[] ruleActions = intent.getBooleanArrayExtra(ACTIONS);
 
-        // Mute all volume Action here
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            audioManager.setStreamVolume(AudioManager.STREAM_ALARM, AudioManager.ADJUST_MUTE, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, AudioManager.ADJUST_MUTE, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_MUTE, 0);
-            audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, AudioManager.ADJUST_MUTE, 0);
-        } else {
-            audioManager.setStreamMute(AudioManager.STREAM_ALARM, true);
-            audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
-            audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
-            audioManager.setStreamMute(AudioManager.STREAM_RING, true);
-            audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+        if(ruleActions[Rule.ACTION_MUTE_ALL]) {
+            AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
+
+            // Mute all volume Action here
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                audioManager.setStreamVolume(AudioManager.STREAM_ALARM, AudioManager.ADJUST_MUTE, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_MUSIC, AudioManager.ADJUST_MUTE, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_NOTIFICATION, AudioManager.ADJUST_MUTE, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_RING, AudioManager.ADJUST_MUTE, 0);
+                audioManager.setStreamVolume(AudioManager.STREAM_SYSTEM, AudioManager.ADJUST_MUTE, 0);
+            } else {
+                audioManager.setStreamMute(AudioManager.STREAM_ALARM, true);
+                audioManager.setStreamMute(AudioManager.STREAM_MUSIC, true);
+                audioManager.setStreamMute(AudioManager.STREAM_NOTIFICATION, true);
+                audioManager.setStreamMute(AudioManager.STREAM_RING, true);
+                audioManager.setStreamMute(AudioManager.STREAM_SYSTEM, true);
+            }
+
+            if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
+                audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+            }
+
+            // Wait for 0.1 second
+            // Direct changing won't set the Do Not Disturb on
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
         }
-
-        if (audioManager.getRingerMode() == AudioManager.RINGER_MODE_SILENT) {
-            audioManager.setRingerMode(AudioManager.RINGER_MODE_NORMAL);
+        
+        if(ruleActions[Rule.ACTION_SHUTDOWN]) {
+            try {
+                Runtime.getRuntime().exec(new String[]{ "su", "-c", "reboot -p" });
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-
-        // Wait for 0.1 second
-        // Direct changing won't set the Do Not Disturb on
-        try {
-            Thread.sleep(100);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-
-        audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
-
 
         // Modify the notification here
         String ruleName = intent.getStringExtra(NOTIFICATION_NAME);
@@ -114,14 +128,6 @@ public class RuleAlarm extends BroadcastReceiver {
                 MainActivity.ruleList.getAdapter().notifyDataSetChanged();
             }
         }
-
-        /* Shutdown the device
-        try {
-            Runtime.getRuntime().exec(new String[]{ "su", "-c", "reboot -p" });
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
 
         Log.d(TAG, "onReceive: fired");
     }
