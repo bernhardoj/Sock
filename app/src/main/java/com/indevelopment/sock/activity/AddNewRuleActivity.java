@@ -2,9 +2,6 @@ package com.indevelopment.sock.activity;
 
 import android.app.TimePickerDialog;
 import android.content.Intent;
-import android.content.res.ColorStateList;
-import android.graphics.Color;
-import android.os.Build;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -33,7 +30,9 @@ import com.indevelopment.sock.Alarm;
 import com.indevelopment.sock.model.Rule;
 import com.indevelopment.sock.R;
 
-import java.io.IOException;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.InputStreamReader;
 import java.util.Calendar;
 import java.util.Locale;
 import java.util.UUID;
@@ -274,44 +273,17 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 break;
             case R.id.shutDown_cBox:
                 if (shutDown_cBox.isChecked()) {
-                    if (isRootGranted()) {
-                        shutDown_cBox.setChecked(true);
+                    if (isRootGiven()) {
                         actions[Rule.ACTION_SHUTDOWN] = true;
                     } else {
                         shutDown_cBox.setChecked(false);
+                        actions[Rule.ACTION_SHUTDOWN] = false;
                     }
                 } else {
                     actions[Rule.ACTION_SHUTDOWN] = false;
                 }
                 break;
         }
-    }
-
-    private boolean isRootGranted() {
-        Process p;
-        try {
-            p = Runtime.getRuntime().exec("su");
-        } catch (IOException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "Your device is not rooted", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        int result;
-        try {
-            result = p.waitFor();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-            Toast.makeText(this, "You need to grant root access", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        if(result != 0) {
-            Toast.makeText(this, "You need to grant root access", Toast.LENGTH_SHORT).show();
-            return false;
-        }
-
-        return true;
     }
 
     private void showTimePickerDialog(int editTextId) {
@@ -341,5 +313,40 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
             if (b) return false;
         }
         return true;
+    }
+
+    public boolean isRootAvailable() {
+        String path = System.getenv("PATH");
+        if(path != null) {
+            for (String pathDir : path.split(":")) {
+                if (new File(pathDir, "su").exists()) {
+                    return true;
+                }
+            }
+        }
+
+        Toast.makeText(this, "You don't have root access", Toast.LENGTH_SHORT).show();
+        return false;
+    }
+
+    public boolean isRootGiven() {
+        if (isRootAvailable()) {
+            Process process = null;
+            try {
+                process = Runtime.getRuntime().exec(new String[]{"su", "-c", "id"});
+                BufferedReader in = new BufferedReader(new InputStreamReader(process.getInputStream()));
+                String output = in.readLine();
+                if (output != null && output.toLowerCase().contains("uid=0"))
+                    return true;
+            } catch (Exception e) {
+                e.printStackTrace();
+            } finally {
+                if (process != null) {
+                    process.destroy();
+                }
+            }
+        }
+        Toast.makeText(this, "Please grant root access!", Toast.LENGTH_SHORT).show();
+        return false;
     }
 }
