@@ -38,7 +38,7 @@ public class RuleAlarm extends BroadcastReceiver {
         // To make sure rule got switched off (if not repeating),
         // Make any changes related to the rule first;
         // Then fire all the rule.
-        
+
         /* Rule-related changes START here */
         // Modify the notification here
         String ruleName = intent.getStringExtra(NOTIFICATION_NAME);
