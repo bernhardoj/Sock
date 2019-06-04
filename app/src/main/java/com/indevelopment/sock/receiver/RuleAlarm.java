@@ -12,8 +12,6 @@ import android.os.Build;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
-import android.util.Log;
-
 import com.indevelopment.sock.R;
 import com.indevelopment.sock.activity.AddNewRuleActivity;
 import com.indevelopment.sock.activity.MainActivity;
@@ -31,13 +29,69 @@ public class RuleAlarm extends BroadcastReceiver {
 
     private static final String CHANNEL_ID = "rule_channel";
     private static final String CUSTOM_DETAIL_PREFERENCE_KEY = "custom_detail";
-    private static final String TAG = "RuleAlarm";
     private static final int NOTIFICATION_ID = 0;
 
     @Override
     public void onReceive(Context context, Intent intent) {
         boolean[] ruleActions = intent.getBooleanArrayExtra(ACTIONS);
 
+        // To make sure rule got switched off (if not repeating),
+        // Make any changes related to the rule first;
+        // Then fire all the rule.
+        
+        /* Rule-related changes START here */
+        // Modify the notification here
+        String ruleName = intent.getStringExtra(NOTIFICATION_NAME);
+        String ruleStart = intent.getStringExtra(NOTIFICATION_DETAIL);
+        boolean isRepeating = intent.getBooleanExtra(REPEAT, true);
+        int ruleIndex = intent.getIntExtra(AddNewRuleActivity.RULE_INDEX, 0);
+
+        String ruleTitle = String.format(context.getString(R.string.rule_notification_title), ruleName);
+        String ruleDetail = String.format(context.getString(R.string.rule_notification_detail), ruleStart);
+
+        createNotificationChannel(context);
+
+        // Get user custom notification detail
+        SharedPreferences sharedPreferences =
+                context.getSharedPreferences(context.getPackageName() + "_preferences", Context.MODE_PRIVATE);
+
+        // Overwrite default notification detail
+        // with user custom detail if exist
+
+        String customDetail = sharedPreferences.getString(CUSTOM_DETAIL_PREFERENCE_KEY, "");
+        if (customDetail != null) {
+            customDetail = customDetail.trim();
+
+            if (!customDetail.equals("")) {
+                ruleDetail = customDetail;
+            }
+        }
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
+
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
+                .setSmallIcon(R.drawable.ic_library_books_notification)
+                .setContentTitle(ruleTitle)
+                .setStyle(new NotificationCompat.BigTextStyle()
+                        .bigText(ruleDetail))
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                .setCategory(NotificationCompat.CATEGORY_ALARM)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
+
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
+
+        // Switch the switch off if not repeating
+        if (!isRepeating) {
+            RuleData.rules.get(ruleIndex).setSwitched(false);
+            // Apply the switch effect in the RecyclerView List
+            RuleAdapter adapter = (RuleAdapter) MainActivity.ruleList.getAdapter();
+            if(adapter != null) {
+                MainActivity.ruleList.getAdapter().notifyDataSetChanged();
+            }
+        }
+        /* Rule-related changes END here */
+
+        // Handle rule START here
         if(ruleActions[Rule.ACTION_MUTE_ALL]) {
             AudioManager audioManager = (AudioManager) context.getSystemService(Context.AUDIO_SERVICE);
 
@@ -78,58 +132,7 @@ public class RuleAlarm extends BroadcastReceiver {
                 e.printStackTrace();
             }
         }
-
-        // Modify the notification here
-        String ruleName = intent.getStringExtra(NOTIFICATION_NAME);
-        String ruleStart = intent.getStringExtra(NOTIFICATION_DETAIL);
-        boolean isRepeating = intent.getBooleanExtra(REPEAT, true);
-        int ruleIndex = intent.getIntExtra(AddNewRuleActivity.RULE_INDEX, 0);
-
-        String ruleTitle = String.format(context.getString(R.string.rule_notification_title), ruleName);
-        String ruleDetail = String.format(context.getString(R.string.rule_notification_detail), ruleStart);
-
-        createNotificationChannel(context);
-
-        // Get user custom notification detail
-        SharedPreferences sharedPreferences =
-                context.getSharedPreferences(context.getPackageName() + "_preferences", Context.MODE_PRIVATE);
-
-        // Overwrite default notification detail
-        // with user custom detail if exist
-
-        String customDetail = sharedPreferences.getString(CUSTOM_DETAIL_PREFERENCE_KEY, "");
-        if (customDetail != null) {
-            customDetail = customDetail.trim();
-
-            if (!customDetail.equals("")) {
-                ruleDetail = customDetail;
-            }
-        }
-
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(context);
-
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
-                .setSmallIcon(R.drawable.ic_library_books_notification)
-                .setContentTitle(ruleTitle)
-                .setStyle(new NotificationCompat.BigTextStyle()
-                    .bigText(ruleDetail))
-                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                .setCategory(NotificationCompat.CATEGORY_ALARM)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC);
-
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
-
-        // Switch the switch off if not repeating
-        if (!isRepeating) {
-            RuleData.rules.get(ruleIndex).setSwitched(false);
-            // Apply the switch effect in the RecyclerView List
-            RuleAdapter adapter = (RuleAdapter) MainActivity.ruleList.getAdapter();
-            if(adapter != null) {
-                MainActivity.ruleList.getAdapter().notifyDataSetChanged();
-            }
-        }
-
-        Log.d(TAG, "onReceive: fired");
+        // Handle rule END here
     }
 
     private void createNotificationChannel(Context context) {
