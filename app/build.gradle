@@ -31,7 +31,6 @@ dependencies {
     implementation 'androidx.recyclerview:recyclerview:1.0.0'
     implementation 'com.google.code.gson:gson:2.8.5'
     implementation 'androidx.preference:preference:1.1.0-alpha05'
-    implementation 'com.scottyab:rootbeer-lib:0.0.7'
     implementation('org.rm3l:maoni:7.0.0@aar') {
         transitive true
     }
