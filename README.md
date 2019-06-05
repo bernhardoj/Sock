@@ -26,7 +26,7 @@ Premium feature is available through in-app purchase. By unlocking your premium 
   It will changed current theme to Dark Mode theme, vice versa.
 
 # License
-MIT License
+<pre>MIT License
 
 Copyright (c) 2019 Bernhard Owen Josephus
 
@@ -46,4 +46,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
+SOFTWARE.</pre>
