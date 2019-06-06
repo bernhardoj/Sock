@@ -6,7 +6,7 @@ You just need to set the rule, describes below:
   - Frequency (Is it repeating every week?)
   - Action (explained on the next section)
 
-# Actions
+<h3> Actions </h3>
 - Mute<br>
   Your device volume stream will be automatically muted and Do Not Disturb will be toggled on immediately when the rule is applied. 
   List of the volume stream that will be muted:
@@ -20,12 +20,12 @@ You just need to set the rule, describes below:
   REQUIRES ROOT. This action will be fired last.<br>
   By enable the shutdown action, your device will be shutdown automatically without any prior notice.
 
-# Premium
+<h3> Premium </h3>
 Premium feature is available through in-app purchase. By unlocking your premium feature, you will get:
 - Dark Mode<br>
   It will changed current theme to Dark Mode theme, vice versa.
 
-# License
+<h3> License </h3>
 <pre>MIT License
 
 Copyright (c) 2019 Bernhard Owen Josephus
