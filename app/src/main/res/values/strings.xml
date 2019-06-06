@@ -3,6 +3,7 @@
     <string name="input_your_rule_name">Rule name</string>
     <string name="startTime_hint">Time</string>
     <string name="rule_actions">ACTIONS</string>
+    <string name="action_done">Done</string>
 
     <string name="empty_rule_string">Your rule is empty</string>
     <string name="rule_day">Day</string>
@@ -52,8 +53,14 @@
 
     <!-- Customization Preferences -->
     <string name="dark_mode_title">Dark mode</string>
+    <string name="dark_mode_summary">*Requires premium unlocked*</string>
 
-    <string name="app_version" translatable="false">v1.0.0</string>
-    <string name="action_done">Done</string>
+    <!-- About Preferences -->
+    <string name="app_version">Version 1.0.0</string>
+    <string name="rate_this_app">Rate this app</string>
+    <string name="license">Licenses</string>
+
+
+
 
 </resources>
