@@ -9,7 +9,6 @@
 /.idea/assetWizardSettings.xml
 .DS_Store
 /build
-/release
 /captures
 .externalNativeBuild
 
@@ -75,3 +74,4 @@ fabric.properties
 
 # Editor-based Rest Client
 .idea/httpRequests
+app/release/
