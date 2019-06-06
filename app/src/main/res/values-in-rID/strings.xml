@@ -6,7 +6,6 @@
     <string name="action_done">Selesai</string>
     <string name="dark_mode_title">Mode gelap</string>
     <string name="empty_rule_string">Aturanmu kosong</string>
-    <string name="feedback_header">Umpan balik</string>
     <string name="input_your_rule_name">Nama aturan</string>
     <string name="new_rule_activity">Aturan Baru</string>
     <string name="notification_header">Notifikasi</string>
@@ -28,4 +27,5 @@
     <string name="action_shutdown">Matikan perangkat \n*ROOT*</string>
     <string name="channel_name">Aturan diterapkan</string>
     <string name="channel_description">Memberitahukan pengguna bahwa aturan diterapkan</string>
+    <string name="about_header">Tentang</string>
 </resources>

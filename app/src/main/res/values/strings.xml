@@ -45,16 +45,15 @@
     <!-- Preference Titles -->
     <string name="notification_header">Notification</string>
     <string name="customize_header">Customize</string>
-    <string name="feedback_header">Feedback</string>
+    <string name="about_header">About</string>
 
     <!-- Messages Preferences -->
     <string name="custom_detail_title">Your custom detail</string>
 
-    <!-- Sync Preferences -->
+    <!-- Customization Preferences -->
     <string name="dark_mode_title">Dark mode</string>
 
-    <!--Feedback and Bug Report-->
-    <string name="feedback_bug_report" translatable="false">com.indevelopment@gmail.com</string>
+    <string name="app_version" translatable="false">v1.0.0</string>
     <string name="action_done">Done</string>
 
 </resources>
