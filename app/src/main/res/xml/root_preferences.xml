@@ -29,12 +29,28 @@
 
         <com.indevelopment.sock.preference.MySwitchPreferenceCompat
             app:key="dark_mode"
-            app:title="@string/dark_mode_title" />
+            app:title="@string/dark_mode_title"
+            app:summary="@string/dark_mode_summary"/>
 
     </PreferenceCategory>
 
+    <PreferenceCategory app:title="Premium">
+        <com.indevelopment.sock.preference.MyPreference
+            app:title="Unlock PREMIUM"
+            app:summary="Buy this to unlock Premium features"
+            app:key="unlock_premium" />
+    </PreferenceCategory>
+
     <com.indevelopment.sock.preference.MyPreferenceCategory
-        app:summary="@string/feedback_bug_report"
-        app:title="@string/feedback_header" />
+        app:title="@string/about_header">
+        <com.indevelopment.sock.preference.MyPreference
+            app:title="@string/app_version"
+            app:summary="@string/rate_this_app"
+            app:key="rate_app" />
+        <com.indevelopment.sock.preference.MyPreference
+            app:title="@string/license"
+            app:key="licenses"/>
+
+    </com.indevelopment.sock.preference.MyPreferenceCategory>
 
 </androidx.preference.PreferenceScreen>
