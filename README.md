@@ -6,8 +6,8 @@ You just need to set the rule, describes below:
   - Frequency (Is it repeating every week?)
   - Action (explained on the next section)
 
-<h3> Actions </h3>
-- Mute<br>
+### Actions
+- Mute <br>
   Your device volume stream will be automatically muted and Do Not Disturb will be toggled on immediately when the rule is applied. 
   List of the volume stream that will be muted:
     - Alarm
@@ -15,18 +15,18 @@ You just need to set the rule, describes below:
     - Notification
     - Ring
     - System
-    
-- Shutdown<br>
-  REQUIRES ROOT. This action will be fired last.<br>
+
+- Shutdown <br>
+  REQUIRES ROOT. This action will be fired last. <br>
   By enable the shutdown action, your device will be shutdown automatically without any prior notice.
 
-<h3> Premium </h3>
-Premium feature is available through in-app purchase. By unlocking your premium feature, you will get:
-- Dark Mode<br>
+### Premium
+Premium feature is available through in-app purchase. By unlocking the premium feature, you will get: <br>
+- Dark Mode <br>
   It will changed current theme to Dark Mode theme, vice versa.
 
-<h3> License </h3>
-<pre>MIT License
+### License 
+```MIT License
 
 Copyright (c) 2019 Bernhard Owen Josephus
 
@@ -46,4 +46,4 @@ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
 AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
 LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
 OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.</pre>
+SOFTWARE.```
