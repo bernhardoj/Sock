@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "971206082186",
+    "firebase_url": "https://sock-c7fb7.firebaseio.com",
+    "project_id": "sock-c7fb7",
+    "storage_bucket": "sock-c7fb7.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:971206082186:android:7212683217d9475a",
+        "android_client_info": {
+          "package_name": "com.indevelopment.sock"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "971206082186-s0tf3c91lm0ccnp5mnp3t76c51ej5840.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.indevelopment.sock",
+            "certificate_hash": "3ee288cd88f45d0d1588d073cd1282a2a03348e8"
+          }
+        },
+        {
+          "client_id": "971206082186-n2oh7cgrhl48ro9i5ievocecksbid7g2.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDz0QZLtAllSF1rrHhLKChaAZhgAgRdh80"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "971206082186-n2oh7cgrhl48ro9i5ievocecksbid7g2.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
