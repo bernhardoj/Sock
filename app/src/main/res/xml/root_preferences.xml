@@ -29,15 +29,16 @@
 
         <com.indevelopment.sock.preference.MySwitchPreferenceCompat
             app:key="dark_mode"
+            app:enabled="false"
             app:title="@string/dark_mode_title"
             app:summary="@string/dark_mode_summary"/>
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="Premium">
+    <PreferenceCategory app:title="@string/premium_header">
         <com.indevelopment.sock.preference.MyPreference
-            app:title="Unlock PREMIUM"
-            app:summary="Buy this to unlock Premium features"
+            app:title="@string/premium_title"
+            app:summary="@string/premium_summary"
             app:key="unlock_premium" />
     </PreferenceCategory>
 
