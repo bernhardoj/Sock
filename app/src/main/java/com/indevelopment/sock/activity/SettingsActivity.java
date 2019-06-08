@@ -5,6 +5,7 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import androidx.appcompat.app.ActionBar;
@@ -15,7 +16,8 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
-import com.indevelopment.sock.BillingManager;
+import com.android.billingclient.api.Purchase;
+import com.indevelopment.sock.billing.BillingManager;
 import com.indevelopment.sock.R;
 import com.indevelopment.sock.adapter.MyArrayAdapter;
 import com.indevelopment.sock.data.LicenseData;
@@ -26,6 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String LICENSES_KEY = "licenses";
     private static final String RATE_APP_KEY = "rate_app";
 
+    private static final String TAG = "SettingsActivity";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
@@ -35,8 +39,9 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         super.onCreate(savedInstanceState);
-
         setContentView(R.layout.settings_activity);
+        Log.d(TAG, "Activity created.");
+
         getSupportFragmentManager()
                 .beginTransaction()
                 .replace(R.id.settings, new SettingsFragment())
@@ -47,17 +52,35 @@ public class SettingsActivity extends AppCompatActivity {
         }
     }
 
-    public static class SettingsFragment extends PreferenceFragmentCompat{
+    public static class SettingsFragment extends PreferenceFragmentCompat {
+
+        BillingManager mBillingManager;
+
         @Override
         public void onCreatePreferences(Bundle savedInstanceState, String rootKey) {
             setPreferencesFromResource(R.xml.root_preferences, rootKey);
+            Log.d(TAG, "PreferenceFragment created.");
             final SwitchPreferenceCompat darkModeSwitch = findPreference(DARK_MODE_KEY);
             final Preference unlockPremium = findPreference(UNLOCK_PREMIUM_KEY);
             final Preference licenseView = findPreference(LICENSES_KEY);
             final Preference rateApp = findPreference(RATE_APP_KEY);
 
+            mBillingManager = new BillingManager(getActivity(), new BillingManager.BillingUpdatesListener() {
+                @Override
+                public void onPurchasesUpdated(Purchase purchase) {
+                    if (purchase.getSku().equals(BillingManager.ITEM_SKU)) {
+                        if (unlockPremium != null && darkModeSwitch != null) {
+                            darkModeSwitch.setEnabled(true);
+                            unlockPremium.setSummary("Unlocked");
+                        } else {
+                            Log.w(TAG, "Dark Mode switch or Unlock PREMIUM preference is null");
+                        }
+                    }
+                }
+            });
+
             // Handle the dark mode here
-            if(darkModeSwitch != null) {
+            if (darkModeSwitch != null) {
                 if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
                     darkModeSwitch.setChecked(true);
                 }
@@ -78,25 +101,29 @@ public class SettingsActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+            } else {
+                Log.w(TAG, "Dark mode switch is null");
             }
 
             // Handle the Google Play billing here
-            if(unlockPremium != null) {
+            if (unlockPremium != null) {
                 unlockPremium.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        new BillingManager(getActivity());
+                        mBillingManager.initiatePurchaseFlow(0);
                         return true;
                     }
                 });
+            } else {
+                Log.w(TAG, "Unlock PREMIUM preference is null");
             }
 
-            if(licenseView != null) {
+            if (licenseView != null) {
                 licenseView.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
                         Activity activity = getActivity();
-                        if(activity != null) {
+                        if (activity != null) {
                             final MyArrayAdapter adapter =
                                     new MyArrayAdapter(activity, R.layout.license_layout, LicenseData.generateLicense());
 
@@ -128,9 +155,11 @@ public class SettingsActivity extends AppCompatActivity {
                         return false;
                     }
                 });
+            } else {
+                Log.w(TAG, "License preference is null");
             }
 
-            if(rateApp != null) {
+            if (rateApp != null) {
                 rateApp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
@@ -139,6 +168,8 @@ public class SettingsActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+            } else {
+                Log.w(TAG, "Rate app preference is null");
             }
         }
 
@@ -146,6 +177,13 @@ public class SettingsActivity extends AppCompatActivity {
             Intent intent = new Intent(getContext(), SettingsActivity.class);
             intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
             startActivity(intent);
+            Log.d(TAG, "Activity restarted.");
+        }
+
+        @Override
+        public void onDestroy() {
+            super.onDestroy();
+            mBillingManager.destroy();
         }
     }
 
