@@ -32,4 +32,7 @@
     <string name="rate_this_app">Nilai aplikasi ini</string>
     <string name="dark_mode_summary">*Fitur premium harus dibuka*</string>
     <string name="license">Lisensi</string>
+    <string name="premium_header">Premium</string>
+    <string name="premium_summary">Beli ini untuk mengaktifkan fitur Premium</string>
+    <string name="premium_title">Aktifkan PREMIUM</string>
 </resources>

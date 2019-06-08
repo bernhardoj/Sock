@@ -47,6 +47,7 @@
     <string name="notification_header">Notification</string>
     <string name="customize_header">Customize</string>
     <string name="about_header">About</string>
+    <string name="premium_header">Premium</string>
 
     <!-- Messages Preferences -->
     <string name="custom_detail_title">Your custom detail</string>
@@ -60,7 +61,9 @@
     <string name="rate_this_app">Rate this app</string>
     <string name="license">Licenses</string>
 
-
+    <!-- Premium Preferences -->
+    <string name="premium_title">Unlock PREMIUM</string>
+    <string name="premium_summary">Buy this to unlock Premium features</string>
 
 
 </resources>
