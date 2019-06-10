@@ -28,6 +28,8 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String LICENSES_KEY = "licenses";
     private static final String RATE_APP_KEY = "rate_app";
 
+    private static final String PACKAGE_NAME = "com.indevelopment.sock";
+
     private static final String TAG = "SettingsActivity";
 
     @Override
@@ -163,8 +165,10 @@ public class SettingsActivity extends AppCompatActivity {
                 rateApp.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
                     @Override
                     public boolean onPreferenceClick(Preference preference) {
-                        // Intent to App Store here
-
+                        // Intent to Play Store here
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse("market://details?id=" + PACKAGE_NAME));
+                        startActivity(intent);
                         return true;
                     }
                 });
