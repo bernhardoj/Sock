@@ -18,12 +18,12 @@ You just need to set the rule, describes below:
 
 - Shutdown <br>
   REQUIRES ROOT. This action will be fired last. <br>
-  By enable the shutdown action, your device will be shutdown automatically without any prior notice.
+  By enable the shutdown action, your device will be shut down automatically without any prior notice.
 
 ### Premium
-Premium feature is available through in-app purchase. By unlocking the premium feature, you will get: <br>
+The premium feature is available through in-app purchase. By unlocking the premium feature, you will get: <br>
 - Dark Mode <br>
-  It will changed current theme to Dark Mode theme, vice versa.
+  It will changed the current theme to Dark Mode theme, vice versa.
 
 ### License 
 ```
