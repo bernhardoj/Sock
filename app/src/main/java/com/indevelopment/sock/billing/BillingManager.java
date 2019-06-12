@@ -2,7 +2,9 @@ package com.indevelopment.sock.billing;
 
 import android.app.Activity;
 import android.util.Log;
+import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.android.billingclient.api.AcknowledgePurchaseParams;
@@ -16,11 +18,17 @@ import com.android.billingclient.api.PurchasesUpdatedListener;
 import com.android.billingclient.api.SkuDetails;
 import com.android.billingclient.api.SkuDetailsParams;
 import com.android.billingclient.api.SkuDetailsResponseListener;
+import com.google.android.gms.tasks.Continuation;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.functions.FirebaseFunctions;
+import com.google.firebase.functions.HttpsCallableResult;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Handles all the interactions with Play Store (via Billing library), maintains connection to
@@ -34,24 +42,16 @@ public class BillingManager implements PurchasesUpdatedListener {
      **/
     private BillingClient mBillingClient;
 
+    /**
+     * A reference to FirebaseFunctions
+     */
+    private FirebaseFunctions mFunctions;
+
     private final Activity mActivity;
 
     private List<SkuDetails> mSkuDetails = new ArrayList<>();
 
     public static final String ITEM_SKU = "indevelopment.sock.premium";
-
-    /* BASE_64_ENCODED_PUBLIC_KEY should be YOUR APPLICATION'S PUBLIC KEY
-     * (that you got from the Google Play developer console). This is not your
-     * developer public key, it's the *app-specific* public key.
-     *
-     * Instead of just storing the entire literal string here embedded in the
-     * program,  construct the key at runtime from pieces or
-     * use bit manipulation (for example, XOR with some other string) to hide
-     * the actual key.  The key itself is not secret information, but we don't
-     * want to make it easy for an attacker to replace the public key with one
-     * of their own and then fake messages from the server.
-     */
-    private static final String BASE_64_ENCODED_PUBLIC_KEY = "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0fgh18v1nnfnBZJ6BuMknbJrwBKvlVTvqvZBm3FiFchk1Au8yVtunLnwbCNs6ObP0qJsoBm9tYY3FeAQz3y5RafITFvHp5bjEUw1aRTJqiRc6U+r3wBL5U4oxlkFfziClzCSfLTWuVEn9ESLc7QW7E4TzM9xT+DvQVgkwkfTPHYb0AllXg4q4Y/SasCrEzYuwQ3C6DyF51ESk2tgjuHLKThTZERe/ls6qbeiSCa1Ywn4f/q/Z13uWpEvk0WHLincH0RkItmmTBJp4AKUMs/ZpsmyYMktlNcpE+E66n9xYCQKQegTU9tMk9Jkq3a23wBpBnimXgRiosfgQA/ReJnShwIDAQAB";
 
     public interface BillingUpdatesListener {
         void onPurchasesUpdated(Purchase purchase);
@@ -69,6 +69,8 @@ public class BillingManager implements PurchasesUpdatedListener {
         mActivity = activity;
         mBillingUpdatesListener = billingUpdatesListener;
         mBillingClient = BillingClient.newBuilder(mActivity).setListener(this).enablePendingPurchases().build();
+
+        mFunctions = FirebaseFunctions.getInstance();
 
         Log.d(TAG, "Starting setup.");
 
@@ -184,6 +186,7 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     /**
      * Establish a connection to Google Play Billing Client
+     *
      * @param runnable Will be execute when connected to Google Play Billing
      */
     private void startServiceConnection(final Runnable runnable) {
@@ -218,8 +221,9 @@ public class BillingManager implements PurchasesUpdatedListener {
                             handlePurchase(purchase);
                         }
                     }
-                } else if(responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
+                } else if (responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                     Log.d(TAG, billingResult.getDebugMessage());
+                    Toast.makeText(mActivity, "Item already bought", Toast.LENGTH_SHORT).show();
                     queryPurchases();
                 } else if (responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
                     Log.i(TAG, "onPurchasesUpdated() - user cancelled the purchase flow - skipping");
@@ -231,48 +235,78 @@ public class BillingManager implements PurchasesUpdatedListener {
         executeServiceRequest(runnable);
     }
 
-    private void handlePurchase(Purchase purchase) {
-        if(!verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())) {
-            Log.i(TAG, "Got a purchase: " + purchase + "; but signature is bad. Skipping...");
-            return;
-        }
+    private void handlePurchase(final Purchase purchase) {
+        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+            verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())
+                    .addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+                        @Override
+                        public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                            if (task.isSuccessful()) {
+                                Log.d(TAG, "Task successfully done!");
 
-        Log.d(TAG, "Got a verified purchase: " + purchase);
+                                Map<String, Object> result = task.getResult();
 
-        if(purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            Log.d(TAG, "Purchase state: " +purchase.getPurchaseState());
-            mBillingUpdatesListener.onPurchasesUpdated(purchase);
+                                if (result != null) {
+                                    if ((boolean) result.get("verified")) {
+                                        Log.d(TAG, "Got a verified purchase: ");
 
-            if (!purchase.isAcknowledged()) {
-                Log.e(TAG, "Purchase acknowledged");
-                AcknowledgePurchaseParams acknowledgePurchaseParams =
-                        AcknowledgePurchaseParams.newBuilder()
-                            .setPurchaseToken(purchase.getPurchaseToken())
-                            .build();
+                                        Log.d(TAG, "Purchase state: " + purchase.getPurchaseState());
 
-                mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
-                    @Override
-                    public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
-                        Log.d(TAG, "Acknowledge response return response with code: " + billingResult.getResponseCode());
-                    }
-                });
-            }
+                                        mBillingUpdatesListener.onPurchasesUpdated(purchase);
+
+                                        if (!purchase.isAcknowledged()) {
+                                            AcknowledgePurchaseParams acknowledgePurchaseParams =
+                                                    AcknowledgePurchaseParams.newBuilder()
+                                                            .setPurchaseToken(purchase.getPurchaseToken())
+                                                            .build();
+
+                                            mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
+                                                @Override
+                                                public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+                                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                                        Log.d(TAG, "Purchase acknowledged");
+                                                    } else {
+                                                        Log.d(TAG, "Acknowledge response return response with code: " + billingResult.getResponseCode());
+                                                    }
+                                                }
+                                            });
+                                        }
+                                    } else {
+                                        Log.i(TAG, "Purchase is not valid");
+                                    }
+                                } else {
+                                    Log.w(TAG, "No result found from the task!");
+                                }
+                            } else {
+                                Log.e(TAG, "Firebase Cloud Functions encounter an error");
+                            }
+                        }
+                    });
         }
     }
 
     /**
-     * Verifies that the purchase was signed correctly for this developer's public key.
-     * <p>Note: It's strongly recommended to perform such check on your backend since hackers can
-     * replace this method with "constant true" if they decompile/rebuild your app.
-     * </p>
+     * Verifies that the purchase was signed correctly for this developer's public key.\
      */
-    private boolean verifyValidSignature(String signedData, String signature) {
-        try {
-            return Security.verifyPurchase(BASE_64_ENCODED_PUBLIC_KEY, signedData, signature);
-        } catch (IOException e) {
-            Log.e(TAG, "Got an exception trying to validate a purchase: " + e);
-            return false;
-        }
+    private Task<Map<String, Object>> verifyValidSignature(String signedData, String signature) {
+        // Create the arguments to the callable function.
+        Map<String, Object> data = new HashMap<>();
+        data.put("signedData", signedData);
+        data.put("signature", signature);
+
+        return mFunctions.getHttpsCallable("verifySignature")
+                .call(data)
+                .continueWith(new Continuation<HttpsCallableResult, Map<String, Object>>() {
+                    @Override
+                    public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
+                        HttpsCallableResult result = task.getResult();
+                        if (result != null) {
+                            return (Map<String, Object>) result.getData();
+                        }
+
+                        return null;
+                    }
+                });
     }
 
     /**
