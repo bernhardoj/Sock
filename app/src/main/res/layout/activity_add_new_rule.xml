@@ -5,8 +5,8 @@
     android:id="@+id/scrollView"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".activity.AddNewRuleActivity"
-    android:background="?attr/backgroundColor">
+    android:background="?attr/backgroundColor"
+    tools:context=".activity.AddNewRuleActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -23,8 +23,9 @@
                 app:srcCompat="@drawable/ic_label_outline_black_24dp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/MaterialTextInputLayout"
-                android:id="@+id/ruleName_layout">
+                android:id="@+id/ruleName_layout"
+                style="@style/MaterialTextInputLayout">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/rule_name_edt"
                     style="@style/RuleEditTextField"
@@ -42,30 +43,18 @@
                 app:srcCompat="@drawable/ic_access_time_black_24dp" />
 
             <com.google.android.material.textfield.TextInputLayout
-                style="@style/MaterialTextInputLayout"
-                android:id="@+id/ruleStart_layout">
+                android:id="@+id/ruleStart_layout"
+                style="@style/MaterialTextInputLayout">
+
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/startTime_ed"
                     style="@style/RuleEditTextField"
                     android:focusable="false"
                     android:hint="@string/startTime_hint"
                     android:inputType="none"
-                    android:longClickable="false"/>
+                    android:longClickable="false" />
             </com.google.android.material.textfield.TextInputLayout>
 
-            <!--<TextView-->
-            <!--android:layout_width="wrap_content"-->
-            <!--android:layout_height="wrap_content"-->
-            <!--android:text="–"/>-->
-            <!--<EditText-->
-            <!--android:id="@+id/endTime_ed"-->
-            <!--style="@style/RuleEditTextField"-->
-            <!--android:focusable="false"-->
-            <!--android:hint="@string/startTime_hint"-->
-            <!--android:inputType="none"-->
-            <!--android:longClickable="false"-->
-            <!--tools:ignore="Autofill" -->
-            <!--android:layout_weight="1"/>-->
         </LinearLayout>
 
         <LinearLayout
@@ -74,17 +63,18 @@
 
             <ImageView
                 style="@style/RuleLeftDrawable"
+                android:layout_gravity="center"
                 android:contentDescription="@string/rule_day"
                 app:srcCompat="@drawable/ic_today_black_24dp" />
 
             <Spinner
                 android:id="@+id/day_spinner"
                 android:layout_width="150dp"
-                android:layout_height="match_parent"
-                app:backgroundTint="?attr/textColor"
+                android:layout_height="48dp"
                 android:layout_marginLeft="1.5dp"
                 android:layout_marginRight="1.5dp"
-                android:popupBackground="?attr/optionColor" />
+                android:popupBackground="?attr/optionColor"
+                app:backgroundTint="?attr/textColor" />
         </LinearLayout>
 
         <CheckBox
@@ -96,13 +86,14 @@
         <TextView
             android:id="@+id/action_tv"
             style="@style/RuleText"
-            android:text="@string/rule_actions"/>
+            android:text="@string/rule_actions" />
 
         <LinearLayout
+            android:id="@+id/actions_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:id="@+id/actions_layout">
+            android:orientation="vertical">
+
             <CheckBox
                 android:id="@+id/muteAll_cBox"
                 style="@style/ActionsText"
@@ -111,7 +102,7 @@
             <CheckBox
                 android:id="@+id/shutDown_cBox"
                 style="@style/ActionsText"
-                android:text="@string/action_shutdown"/>
+                android:text="@string/action_shutdown" />
         </LinearLayout>
     </LinearLayout>
 </ScrollView>
