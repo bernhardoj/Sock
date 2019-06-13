@@ -51,6 +51,9 @@
         <com.indevelopment.sock.preference.MyPreference
             app:title="@string/license"
             app:key="licenses"/>
+        <com.indevelopment.sock.preference.MyPreference
+            app:title="Privacy Policy"
+            app:key="privacy_policy"/>
 
     </com.indevelopment.sock.preference.MyPreferenceCategory>
 
