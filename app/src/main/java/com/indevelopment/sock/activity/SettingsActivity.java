@@ -27,6 +27,7 @@ public class SettingsActivity extends AppCompatActivity {
     private static final String UNLOCK_PREMIUM_KEY = "unlock_premium";
     private static final String LICENSES_KEY = "licenses";
     private static final String RATE_APP_KEY = "rate_app";
+    private static final String PRIVACY_POLICY_KEY = "privacy_policy";
 
     private static final String PACKAGE_NAME = "com.indevelopment.sock";
 
@@ -66,6 +67,7 @@ public class SettingsActivity extends AppCompatActivity {
             final Preference unlockPremium = findPreference(UNLOCK_PREMIUM_KEY);
             final Preference licenseView = findPreference(LICENSES_KEY);
             final Preference rateApp = findPreference(RATE_APP_KEY);
+            final Preference privacyPolicy = findPreference(PRIVACY_POLICY_KEY);
 
             mBillingManager = new BillingManager(getActivity(), new BillingManager.BillingUpdatesListener() {
                 @Override
@@ -174,6 +176,19 @@ public class SettingsActivity extends AppCompatActivity {
                 });
             } else {
                 Log.w(TAG, "Rate app preference is null");
+            }
+
+            if (privacyPolicy != null) {
+                privacyPolicy.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener() {
+                    @Override
+                    public boolean onPreferenceClick(Preference preference) {
+                        // Intent to Privacy Policy page here
+                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                        intent.setData(Uri.parse("https://bernhardoj.github.io/Sock/PrivacyPolicy"));
+                        startActivity(intent);
+                        return true;
+                    }
+                });
             }
         }
 
