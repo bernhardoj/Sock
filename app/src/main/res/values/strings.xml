@@ -64,6 +64,6 @@
     <!-- Premium Preferences -->
     <string name="premium_title">Unlock PREMIUM</string>
     <string name="premium_summary">Buy this to unlock Premium features</string>
-
+    <string name="add_new_rule">Add new rule</string>
 
 </resources>
