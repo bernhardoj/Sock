@@ -288,6 +288,7 @@ public class BillingManager implements PurchasesUpdatedListener {
     /**
      * Verifies that the purchase was signed correctly for this developer's public key.\
      */
+    @SuppressWarnings({"unchecked"})
     private Task<Map<String, Object>> verifyValidSignature(String signedData, String signature) {
         // Create the arguments to the callable function.
         Map<String, Object> data = new HashMap<>();
@@ -301,6 +302,7 @@ public class BillingManager implements PurchasesUpdatedListener {
                     public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
                         HttpsCallableResult result = task.getResult();
                         if (result != null) {
+
                             return (Map<String, Object>) result.getData();
                         }
 
