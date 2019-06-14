@@ -189,6 +189,8 @@ public class SettingsActivity extends AppCompatActivity {
                         return true;
                     }
                 });
+            } else {
+                Log.w(TAG, "Privacy policy preference is null");
             }
         }
 
