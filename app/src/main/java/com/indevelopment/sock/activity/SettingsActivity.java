@@ -202,6 +202,12 @@ public class SettingsActivity extends AppCompatActivity {
         }
 
         @Override
+        public void onResume() {
+            super.onResume();
+            mBillingManager.queryPurchases();
+        }
+
+        @Override
         public void onDestroy() {
             super.onDestroy();
             mBillingManager.destroy();
