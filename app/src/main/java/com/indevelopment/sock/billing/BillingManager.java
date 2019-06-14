@@ -53,6 +53,8 @@ public class BillingManager implements PurchasesUpdatedListener {
 
     public static final String ITEM_SKU = "indevelopment.sock.premium";
 
+    private String[] skuList = new String[]{ITEM_SKU};
+
     public interface BillingUpdatesListener {
         void onPurchasesUpdated(Purchase purchase);
     }
@@ -83,7 +85,7 @@ public class BillingManager implements PurchasesUpdatedListener {
                 // IAB is fully set up. Now, let's get an inventory of stuff we own
                 // and query what we sells.
                 Log.d(TAG, "Setup successful. Querying inventory and SKU Details.");
-                querySkuDetails(new String[]{ITEM_SKU});
+                querySkuDetails(skuList);
                 queryPurchases();
             }
         });
@@ -156,11 +158,11 @@ public class BillingManager implements PurchasesUpdatedListener {
     public void initiatePurchaseFlow(int index) {
         try {
             initiatePurchaseFlow(mSkuDetails.get(index), null);
-        } catch (ArrayIndexOutOfBoundsException e) {
+        } catch (IndexOutOfBoundsException e) {
             Toast.makeText(mActivity, "No internet connection", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "No internet connection!");
+            querySkuDetails(skuList);
         }
-
     }
 
     /**
