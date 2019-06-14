@@ -118,7 +118,7 @@ public class BillingManager implements PurchasesUpdatedListener {
         executeServiceRequest(runnable);
     }
 
-    private void queryPurchases() {
+    public void queryPurchases() {
         Runnable queryToExecute = new Runnable() {
             @Override
             public void run() {
@@ -302,7 +302,6 @@ public class BillingManager implements PurchasesUpdatedListener {
                     public Map<String, Object> then(@NonNull Task<HttpsCallableResult> task) throws Exception {
                         HttpsCallableResult result = task.getResult();
                         if (result != null) {
-
                             return (Map<String, Object>) result.getData();
                         }
 
