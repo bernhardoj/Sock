@@ -28,7 +28,7 @@
     <string name="channel_name">Aturan diterapkan</string>
     <string name="channel_description">Memberitahukan pengguna bahwa aturan diterapkan</string>
     <string name="about_header">Tentang</string>
-    <string name="app_version">Versi 1.0.0</string>
+    <string name="app_version">Versi 0.0.5-alpha</string>
     <string name="rate_this_app">Nilai aplikasi ini</string>
     <string name="dark_mode_summary">*Fitur premium harus dibuka*</string>
     <string name="license">Lisensi</string>
