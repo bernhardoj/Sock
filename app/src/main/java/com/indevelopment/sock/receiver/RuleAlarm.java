@@ -8,6 +8,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.media.AudioManager;
 import android.os.Build;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
@@ -30,6 +31,7 @@ public class RuleAlarm extends BroadcastReceiver {
     private static final String CHANNEL_ID = "rule_channel";
     private static final String CUSTOM_DETAIL_PREFERENCE_KEY = "custom_detail";
     private static final int NOTIFICATION_ID = 0;
+    private static final String TAG = "RuleAlarm";
 
     @Override
     public void onReceive(Context context, Intent intent) {
@@ -57,7 +59,6 @@ public class RuleAlarm extends BroadcastReceiver {
 
         // Overwrite default notification detail
         // with user custom detail if exist
-
         String customDetail = sharedPreferences.getString(CUSTOM_DETAIL_PREFERENCE_KEY, "");
         if (customDetail != null) {
             customDetail = customDetail.trim();
@@ -123,10 +124,12 @@ public class RuleAlarm extends BroadcastReceiver {
             }
 
             audioManager.setRingerMode(AudioManager.RINGER_MODE_SILENT);
+            Log.d(TAG, "Volume muted");
         }
 
         if(ruleActions[Rule.ACTION_SHUTDOWN]) {
             try {
+                Log.d(TAG, "Shutting down");
                 Runtime.getRuntime().exec(new String[]{ "su", "-c", "reboot -p" });
             } catch (IOException e) {
                 e.printStackTrace();
@@ -148,6 +151,7 @@ public class RuleAlarm extends BroadcastReceiver {
             // or other notification behaviors after this
             NotificationManager notificationManager = context.getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
+            Log.d(TAG, "Notification channel created");
         }
     }
 }

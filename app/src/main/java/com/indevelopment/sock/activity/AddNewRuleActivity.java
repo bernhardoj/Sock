@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -44,6 +45,8 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
     public static final String RULE_INDEX = "RULE_INDEX";
     public static final String ALARM_REQUEST_CODE = "ALARM_REQUEST_CODE";
 
+    private static final String TAG = "AddNewRuleActivity";
+
     boolean isEdit = false;
     boolean[] actions;
     int ruleIndex, mRequestCode;
@@ -65,6 +68,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
     protected void onCreate(Bundle savedInstanceState) {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             setTheme(R.style.DarkModeAppTheme);
+            Log.d(TAG, "Dark mode applied");
         } else {
             setTheme(R.style.AppTheme);
         }
@@ -95,11 +99,13 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_item);
         day.setAdapter(adapter);
         day.setSelection(calendar.get(Calendar.DAY_OF_WEEK) - 1);
+        Log.d(TAG, "Day spinner selected to " + day.getSelectedItem());
 
         // Check whether the rule is going to be edited
         Bundle bundle = getIntent().getExtras();
 
         if (bundle != null) {
+            Log.d(TAG, "Editing rule..");
             // Tell the activity that the rule is in edit state
             isEdit = true;
 
@@ -209,6 +215,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
 
                 if (isValid) {
                     // Create or edit rule here
+                    Log.d(TAG, "Got a valid rule detail");
                     if (!isEdit) {
                         UUID uuid = UUID.randomUUID();
                         int requestCode = uuid.hashCode();
@@ -231,7 +238,6 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                         RuleData.rules.get(ruleIndex).setSwitched(true);
 
                         // Update the alarm
-                        //Alarm.cancelAlarm(getApplicationContext(), mRequestCode);
                         Alarm.setAlarm(getApplicationContext(), RuleData.rules.get(ruleIndex));
                     }
                     MainActivity.isRecentlyAdded = true;
@@ -240,6 +246,8 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                     Intent intent = new Intent(this, MainActivity.class);
                     startActivity(intent);
                     finish();
+                } else {
+                    Log.w(TAG, "Rule details is not valid");
                 }
                 break;
             case R.id.remove_rule:
@@ -251,6 +259,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 Intent intent = new Intent(this, MainActivity.class);
                 startActivity(intent);
                 finish();
+                Log.d(TAG, "Rule removed");
                 break;
         }
 

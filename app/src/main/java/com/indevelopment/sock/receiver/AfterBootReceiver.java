@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 
 import com.google.gson.Gson;
 import com.indevelopment.sock.Alarm;
@@ -12,6 +13,8 @@ import com.indevelopment.sock.model.Rule;
 import java.util.Set;
 
 public class AfterBootReceiver extends BroadcastReceiver {
+    private static final String TAG = "AfterBootReceiver";
+
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
@@ -26,6 +29,7 @@ public class AfterBootReceiver extends BroadcastReceiver {
                 rule = gson.fromJson(sets, Rule.class);
                 Alarm.setAlarm(context, rule);
             }
+            Log.d(TAG, "onReceive: All rule restored");
         }
     }
 }
