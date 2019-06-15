@@ -31,10 +31,11 @@
     <string name="app_version">Versi 0.0.5-alpha</string>
     <string name="rate_this_app">Nilai aplikasi ini</string>
     <string name="dark_mode_summary">*Fitur premium harus dibuka*</string>
-    <string name="license">Lisensi</string>
+    <string name="license">Lisensi open source</string>
     <string name="premium_header">Premium</string>
     <string name="premium_summary">Beli ini untuk mengaktifkan fitur Premium</string>
-    <string name="premium_title">Aktifkan PREMIUM</string>
+    <string name="premium_title">Buka PREMIUM</string>
     <string name="add_new_rule">Tambah aturan baru</string>
     <string name="privacy_policy">Kebijakan Privasi</string>
+    <string name="unlocked">Terbuka</string>
 </resources>

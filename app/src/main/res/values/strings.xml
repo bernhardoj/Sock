@@ -59,12 +59,13 @@
     <!-- About Preferences -->
     <string name="app_version">Version 0.0.5-alpha</string>
     <string name="rate_this_app">Rate this app</string>
-    <string name="license">Licenses</string>
+    <string name="license">Open source licenses</string>
     <string name="privacy_policy">Privacy Policy</string>
 
     <!-- Premium Preferences -->
     <string name="premium_title">Unlock PREMIUM</string>
     <string name="premium_summary">Buy this to unlock Premium features</string>
     <string name="add_new_rule">Add new rule</string>
+    <string name="unlocked">Unlocked</string>
 
 </resources>
