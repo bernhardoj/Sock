@@ -17,19 +17,24 @@ public class AfterBootReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
-            SharedPreferences sharedPreferences = context.getSharedPreferences("rule_list", Context.MODE_PRIVATE);
-            Set<String> set = sharedPreferences.getStringSet("rule", null);
-            Gson gson = new Gson();
-            Rule rule;
+        String action = intent.getAction();
+        if (action != null) {
+            if (intent.getAction().equals("android.intent.action.BOOT_COMPLETED")) {
+                SharedPreferences sharedPreferences = context.getSharedPreferences("rule_list", Context.MODE_PRIVATE);
+                Set<String> set = sharedPreferences.getStringSet("rule", null);
+                Gson gson = new Gson();
+                Rule rule;
 
-            // Re-set all the cancelled alarm caused by phone reboot
-            assert set != null;
-            for (String sets : set) {
-                rule = gson.fromJson(sets, Rule.class);
-                Alarm.setAlarm(context, rule);
+                // Re-set all the cancelled alarm caused by phone reboot
+                assert set != null;
+                for (String sets : set) {
+                    rule = gson.fromJson(sets, Rule.class);
+                    Alarm.setAlarm(context, rule);
+                }
+                Log.d(TAG, "onReceive: All rule restored");
             }
-            Log.d(TAG, "onReceive: All rule restored");
+        } else {
+            Log.e(TAG, "onReceive: Intent action string is null");
         }
     }
 }
