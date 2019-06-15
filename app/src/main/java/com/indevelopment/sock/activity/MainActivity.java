@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.DividerItemDecoration;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -41,6 +42,8 @@ public class MainActivity extends AppCompatActivity {
 
     private static final String RULE_PREFERENCE_KEY = "rule";
     private static final String RULE_PREFERENCE_NAME = "rule_list";
+
+    private static final String TAG = "MainActivity";
 
     public static boolean isRecentlyAdded = false;
     public static String recentlyAddedName = "";
@@ -67,6 +70,7 @@ public class MainActivity extends AppCompatActivity {
 
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
             setTheme(R.style.DarkModeAppTheme);
+            Log.d(TAG, "Dark mode applied");
         } else {
             setTheme(R.style.AppTheme);
         }
@@ -89,6 +93,7 @@ public class MainActivity extends AppCompatActivity {
                 // before continue to add new rule section
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     if (n.isNotificationPolicyAccessGranted()) {
+                        Log.d(TAG, "Do Not Disturb access is granted");
                         intent = new Intent(getApplicationContext(), AddNewRuleActivity.class);
                     } else {
                         // Ask the user to grant access
@@ -146,6 +151,7 @@ public class MainActivity extends AppCompatActivity {
         switch (id) {
             case R.id.action_settings:
                 startActivity(new Intent(this, SettingsActivity.class));
+                Log.d(TAG, "Launching setting activity");
                 break;
             case R.id.action_feedback:
                 final MaoniEmailListener maoniEmailListener =
@@ -154,6 +160,7 @@ public class MainActivity extends AppCompatActivity {
                         .withListener(maoniEmailListener)
                         .build()
                         .start(MainActivity.this);
+                Log.d(TAG, "Launching feedback activity");
                 return true;
         }
 
@@ -182,6 +189,7 @@ public class MainActivity extends AppCompatActivity {
 
         editor.putStringSet(RULE_PREFERENCE_KEY, set);
         editor.apply();
+        Log.d(TAG, "Successfully saved");
     }
 
     private void loadFromSharedPreference() {
@@ -194,6 +202,7 @@ public class MainActivity extends AppCompatActivity {
                 RuleData.rules.add(gson.fromJson(sets, Rule.class));
             }
         }
+        Log.d(TAG, "Successfully loaded");
     }
 
     @Override
