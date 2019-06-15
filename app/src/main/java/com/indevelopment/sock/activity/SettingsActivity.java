@@ -75,7 +75,7 @@ public class SettingsActivity extends AppCompatActivity {
                     if (purchase.getSku().equals(BillingManager.ITEM_SKU)) {
                         if (unlockPremium != null && darkModeSwitch != null) {
                             darkModeSwitch.setEnabled(true);
-                            unlockPremium.setSummary("Unlocked");
+                            unlockPremium.setSummary(getResources().getString(R.string.unlocked));
                         } else {
                             Log.w(TAG, "Dark Mode switch or Unlock PREMIUM preference is null");
                         }
@@ -132,7 +132,7 @@ public class SettingsActivity extends AppCompatActivity {
                                     new MyArrayAdapter(activity, R.layout.license_layout, LicenseData.generateLicense());
 
                             new AlertDialog.Builder(activity)
-                                    .setTitle("License")
+                                    .setTitle(getResources().getString(R.string.license))
                                     .setAdapter(adapter, new DialogInterface.OnClickListener() {
                                         @Override
                                         public void onClick(DialogInterface dialog, int which) {
