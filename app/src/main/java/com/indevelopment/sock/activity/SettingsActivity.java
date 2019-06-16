@@ -33,6 +33,8 @@ public class SettingsActivity extends AppCompatActivity {
 
     private static final String TAG = "SettingsActivity";
 
+    public static String unlockedString;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         if (AppCompatDelegate.getDefaultNightMode() == AppCompatDelegate.MODE_NIGHT_YES) {
@@ -69,13 +71,15 @@ public class SettingsActivity extends AppCompatActivity {
             final Preference rateApp = findPreference(RATE_APP_KEY);
             final Preference privacyPolicy = findPreference(PRIVACY_POLICY_KEY);
 
+            unlockedString = getResources().getString(R.string.unlocked);
+
             mBillingManager = new BillingManager(getActivity(), new BillingManager.BillingUpdatesListener() {
                 @Override
                 public void onPurchasesUpdated(Purchase purchase) {
                     if (purchase.getSku().equals(BillingManager.ITEM_SKU)) {
                         if (unlockPremium != null && darkModeSwitch != null) {
                             darkModeSwitch.setEnabled(true);
-                            unlockPremium.setSummary(getResources().getString(R.string.unlocked));
+                            unlockPremium.setSummary(unlockedString);
                         } else {
                             Log.w(TAG, "Dark Mode switch or Unlock PREMIUM preference is null");
                         }
@@ -102,7 +106,7 @@ public class SettingsActivity extends AppCompatActivity {
                             darkModeSwitch.setChecked(true);
                             restartActivity();
                         }
-                        return false;
+                        return true;
                     }
                 });
             } else {
