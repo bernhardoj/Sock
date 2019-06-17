@@ -130,7 +130,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
             }
         }
 
-        rule_startTime.addTextChangedListener(new TextWatcher() {
+        ruleName_edt.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
 
@@ -138,8 +138,8 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                rule_startTime_layout.setError(null);
-                rule_startTime_layout.setErrorEnabled(false);
+                ruleName_layout.setError(null);
+                ruleName_layout.setErrorEnabled(false);
             }
 
             @Override
@@ -203,7 +203,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 }
 
                 if (TextUtils.isEmpty(ruleStartTime)) {
-                    ruleName_layout.setErrorEnabled(true);
+                    rule_startTime_layout.setErrorEnabled(true);
                     rule_startTime_layout.setError(getResources().getString(R.string.required_field_text));
                     isValid = false;
                 }
@@ -244,6 +244,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                     MainActivity.recentlyAddedName = ruleName;
 
                     Intent intent = new Intent(this, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                     startActivity(intent);
                     finish();
                 } else {
@@ -257,6 +258,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 Alarm.cancelAlarm(getApplicationContext(), mRequestCode);
 
                 Intent intent = new Intent(this, MainActivity.class);
+                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
                 finish();
                 Log.d(TAG, "Rule removed");
@@ -308,8 +310,8 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 try {
                     String time = String.format(Locale.US, "%02d:%02d", hourOfDay, minute1);
                     rule_time.setText(time);
-                    ruleName_layout.setError(null);
-                    ruleName_layout.setErrorEnabled(false);
+                    rule_startTime_layout.setError(null);
+                    rule_startTime_layout.setErrorEnabled(false);
                 } catch (NullPointerException np) {
                     Toast.makeText(AddNewRuleActivity.this, "Error, please use send feedback to report the bug!", Toast.LENGTH_SHORT).show();
                 }
