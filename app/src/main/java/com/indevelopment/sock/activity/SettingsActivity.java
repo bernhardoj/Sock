@@ -80,6 +80,7 @@ public class SettingsActivity extends AppCompatActivity {
                         if (unlockPremium != null && darkModeSwitch != null) {
                             darkModeSwitch.setEnabled(true);
                             unlockPremium.setSummary(unlockedString);
+                            darkModeSwitch.setSummary(null);
                         } else {
                             Log.w(TAG, "Dark Mode switch or Unlock PREMIUM preference is null");
                         }
