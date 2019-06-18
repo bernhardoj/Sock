@@ -16,7 +16,8 @@
 
 <androidx.preference.PreferenceScreen xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <PreferenceCategory app:title="@string/notification_header">
+    <PreferenceCategory app:title="@string/notification_header"
+        app:iconSpaceReserved="false">
 
         <com.indevelopment.sock.preference.MyEditTextPreference
             app:key="custom_detail"
@@ -25,7 +26,8 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/customize_header">
+    <PreferenceCategory app:title="@string/customize_header"
+        app:iconSpaceReserved="false">
 
         <com.indevelopment.sock.preference.MySwitchPreferenceCompat
             app:key="dark_mode"
@@ -35,15 +37,16 @@
 
     </PreferenceCategory>
 
-    <PreferenceCategory app:title="@string/premium_header">
+    <PreferenceCategory app:title="@string/premium_header"
+        app:iconSpaceReserved="false">
         <com.indevelopment.sock.preference.MyPreference
             app:title="@string/premium_title"
             app:summary="@string/premium_summary"
             app:key="unlock_premium" />
     </PreferenceCategory>
 
-    <com.indevelopment.sock.preference.MyPreferenceCategory
-        app:title="@string/about_header">
+    <PreferenceCategory app:title="@string/about_header"
+        app:iconSpaceReserved="false">
         <com.indevelopment.sock.preference.MyPreference
             app:title="@string/app_version"
             app:summary="@string/rate_this_app"
@@ -55,6 +58,6 @@
             app:title="Privacy Policy"
             app:key="privacy_policy"/>
 
-    </com.indevelopment.sock.preference.MyPreferenceCategory>
+    </PreferenceCategory>
 
 </androidx.preference.PreferenceScreen>

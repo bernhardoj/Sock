@@ -43,4 +43,10 @@ public class MyEditTextPreference extends EditTextPreference {
             summary.setTextColor(getContext().getResources().getColor(android.R.color.black));
         }
     }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        setIconSpaceReserved(false);
+    }
 }

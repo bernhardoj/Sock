@@ -42,4 +42,10 @@ public class MySwitchPreferenceCompat extends SwitchPreferenceCompat {
             summary.setTextColor(getContext().getResources().getColor(android.R.color.black));
         }
     }
+
+    @Override
+    public void onAttached() {
+        super.onAttached();
+        setIconSpaceReserved(false);
+    }
 }
