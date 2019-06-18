@@ -25,6 +25,11 @@ The premium feature is available through in-app purchase. By unlocking the premi
 - Dark Mode <br>
   It will changed the current theme to Dark Mode theme, vice versa.
 
+### Latest Download Link
+- https://github.com/bernhardoj/Sock/archive/1.0.0.zip
+- https://github.com/bernhardoj/Sock/archive/1.0.0.tar.gz
+- https://github.com/bernhardoj/Sock/releases/download/1.0.0/sock.apk
+
 ### License 
 ```
 MIT License
