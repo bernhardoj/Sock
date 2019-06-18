@@ -16,6 +16,7 @@ import androidx.preference.Preference;
 import androidx.preference.PreferenceFragmentCompat;
 import androidx.preference.SwitchPreferenceCompat;
 
+import com.android.billingclient.api.BillingClient;
 import com.android.billingclient.api.Purchase;
 import com.indevelopment.sock.billing.BillingManager;
 import com.indevelopment.sock.R;
@@ -75,12 +76,16 @@ public class SettingsActivity extends AppCompatActivity {
 
             mBillingManager = new BillingManager(getActivity(), new BillingManager.BillingUpdatesListener() {
                 @Override
-                public void onPurchasesUpdated(Purchase purchase) {
+                public void onPurchasesUpdated(Purchase purchase, int responseCode) {
                     if (purchase.getSku().equals(BillingManager.ITEM_SKU)) {
                         if (unlockPremium != null && darkModeSwitch != null) {
-                            darkModeSwitch.setEnabled(true);
-                            unlockPremium.setSummary(unlockedString);
-                            darkModeSwitch.setSummary(null);
+                            if (responseCode == BillingClient.BillingResponseCode.OK) {
+                                darkModeSwitch.setEnabled(true);
+                                unlockPremium.setSummary(unlockedString);
+                            } else if (responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED){
+                                darkModeSwitch.setChecked(false);
+                                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+                            }
                         } else {
                             Log.w(TAG, "Dark Mode switch or Unlock PREMIUM preference is null");
                         }
