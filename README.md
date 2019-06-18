@@ -1,6 +1,3 @@
-- https://github.com/bernhardoj/Sock/archive/1.0.0.zip
-- https://github.com/bernhardoj/Sock/archive/1.0.0.tar.gz
-- https://github.com/bernhardoj/Sock/releases/download/1.0.0/sock.apk
 # Sock
 Sock is kind of an automation app that can automatically do some actions based on the time you set. 
 You just need to set the rule, describes below:
@@ -27,9 +24,6 @@ You just need to set the rule, describes below:
 The premium feature is available through in-app purchase. By unlocking the premium feature, you will get: <br>
 - Dark Mode <br>
   It will changed the current theme to Dark Mode theme, vice versa.
-
-### Latest Download Link
-
 
 ### License 
 ```
