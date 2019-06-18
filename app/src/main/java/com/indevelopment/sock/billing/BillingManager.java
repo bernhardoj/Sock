@@ -56,13 +56,15 @@ public class BillingManager implements PurchasesUpdatedListener {
     private String[] skuList = new String[]{ITEM_SKU};
 
     public interface BillingUpdatesListener {
-        void onPurchasesUpdated(Purchase purchase);
+        void onPurchasesUpdated(Purchase purchase, int responseCode);
     }
 
     /**
      * True if billing service is connected now.
      */
     private boolean mIsServiceConnected;
+
+    private boolean mIsNetworkAvailable;
 
     private final BillingUpdatesListener mBillingUpdatesListener;
 
@@ -109,8 +111,12 @@ public class BillingManager implements PurchasesUpdatedListener {
                     public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsList) {
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
                             mSkuDetails.addAll(skuDetailsList);
+                            mIsNetworkAvailable = true;
                             Log.d(TAG, "Querying SKU details elapsed time: " + (System.currentTimeMillis() - time)
                                     + "ms with List size: " + mSkuDetails.size());
+                        } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
+                            mIsNetworkAvailable = false;
+                            Log.w(TAG, "Failed to querying SKU Details");
                         }
                     }
                 });
@@ -156,9 +162,13 @@ public class BillingManager implements PurchasesUpdatedListener {
      * Start a purchase flow
      */
     public void initiatePurchaseFlow(int index) {
-        try {
-            initiatePurchaseFlow(mSkuDetails.get(index), null);
-        } catch (IndexOutOfBoundsException e) {
+        if (mIsNetworkAvailable) {
+            try {
+                initiatePurchaseFlow(mSkuDetails.get(index), null);
+            } catch (IndexOutOfBoundsException e) {
+                e.printStackTrace();
+            }
+        } else {
             Toast.makeText(mActivity, "No internet connection", Toast.LENGTH_SHORT).show();
             Log.e(TAG, "No internet connection!");
             querySkuDetails(skuList);
@@ -223,10 +233,10 @@ public class BillingManager implements PurchasesUpdatedListener {
             @Override
             public void run() {
                 int responseCode = billingResult.getResponseCode();
-                if (responseCode == BillingClient.BillingResponseCode.OK) {
+                if (responseCode == BillingClient.BillingResponseCode.OK || responseCode == BillingClient.BillingResponseCode.ITEM_NOT_OWNED) {
                     if (purchases != null) {
                         for (Purchase purchase : purchases) {
-                            handlePurchase(purchase);
+                            handlePurchase(purchase, responseCode);
                         }
                     }
                 } else if (responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
@@ -243,58 +253,62 @@ public class BillingManager implements PurchasesUpdatedListener {
         executeServiceRequest(runnable);
     }
 
-    private void handlePurchase(final Purchase purchase) {
-        if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
-            if (!purchase.isAcknowledged()) {
-                verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())
-                        .addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Map<String, Object>> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Task successfully done!");
+    private void handlePurchase(final Purchase purchase, final int responseCode) {
+        if (responseCode == BillingClient.BillingResponseCode.OK) {
+            if (purchase.getPurchaseState() == Purchase.PurchaseState.PURCHASED) {
+                if (!purchase.isAcknowledged()) {
+                    verifyValidSignature(purchase.getOriginalJson(), purchase.getSignature())
+                            .addOnCompleteListener(new OnCompleteListener<Map<String, Object>>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Map<String, Object>> task) {
+                                    if (task.isSuccessful()) {
+                                        Log.d(TAG, "Task successfully done!");
 
-                                    Map<String, Object> result = task.getResult();
+                                        Map<String, Object> result = task.getResult();
 
-                                    if (result != null) {
-                                        if ((boolean) result.get("verified")) {
-                                            Log.d(TAG, "Got a verified purchase: ");
-                                            Log.d(TAG, "Purchase state: " + purchase.getPurchaseState());
+                                        if (result != null) {
+                                            if ((boolean) result.get("verified")) {
+                                                Log.d(TAG, "Got a verified purchase: ");
+                                                Log.d(TAG, "Purchase state: " + purchase.getPurchaseState());
 
-                                            AcknowledgePurchaseParams acknowledgePurchaseParams =
-                                                    AcknowledgePurchaseParams.newBuilder()
-                                                            .setPurchaseToken(purchase.getPurchaseToken())
-                                                            .build();
+                                                AcknowledgePurchaseParams acknowledgePurchaseParams =
+                                                        AcknowledgePurchaseParams.newBuilder()
+                                                                .setPurchaseToken(purchase.getPurchaseToken())
+                                                                .build();
 
-                                            mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
-                                                @Override
-                                                public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
-                                                    if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
-                                                        mBillingUpdatesListener.onPurchasesUpdated(purchase);
-                                                        Log.d(TAG, "Purchase acknowledged");
-                                                    } else {
-                                                        Log.d(TAG, "Acknowledge response return response with code: " + billingResult.getResponseCode());
+                                                mBillingClient.acknowledgePurchase(acknowledgePurchaseParams, new AcknowledgePurchaseResponseListener() {
+                                                    @Override
+                                                    public void onAcknowledgePurchaseResponse(BillingResult billingResult) {
+                                                        if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK) {
+                                                            mBillingUpdatesListener.onPurchasesUpdated(purchase, BillingClient.BillingResponseCode.OK);
+                                                            Log.d(TAG, "Purchase acknowledged");
+                                                        } else {
+                                                            Log.d(TAG, "Acknowledge response return response with code: " + billingResult.getResponseCode());
+                                                        }
                                                     }
-                                                }
-                                            });
+                                                });
+                                            } else {
+                                                Log.i(TAG, "Purchase is not valid");
+                                            }
                                         } else {
-                                            Log.i(TAG, "Purchase is not valid");
+                                            Log.w(TAG, "No result found from the task!");
                                         }
                                     } else {
-                                        Log.w(TAG, "No result found from the task!");
+                                        Log.e(TAG, "Firebase Cloud Functions encounter an error");
                                     }
-                                } else {
-                                    Log.e(TAG, "Firebase Cloud Functions encounter an error");
                                 }
-                            }
-                        });
-            } else {
-                mBillingUpdatesListener.onPurchasesUpdated(purchase);
+                            });
+                } else {
+                    mBillingUpdatesListener.onPurchasesUpdated(purchase, BillingClient.BillingResponseCode.OK);
+                }
             }
+        } else {
+            mBillingUpdatesListener.onPurchasesUpdated(purchase, BillingClient.BillingResponseCode.ITEM_NOT_OWNED);
         }
     }
 
     /**
-     * Verifies that the purchase was signed correctly for this developer's public key.\
+     * Verifies that the purchase was signed correctly for this developer's public key.
      */
     @SuppressWarnings({"unchecked"})
     private Task<Map<String, Object>> verifyValidSignature(String signedData, String signature) {
