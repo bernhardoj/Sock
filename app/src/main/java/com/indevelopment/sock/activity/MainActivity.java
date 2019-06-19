@@ -82,6 +82,7 @@ public class MainActivity extends AppCompatActivity {
         setTitle(R.string.rule_lists_activity);
 
         ruleList = findViewById(R.id.rv);
+        ruleList.setHasFixedSize(true);
         emptyTextLayout = findViewById(R.id.empty_layout);
 
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -117,14 +118,7 @@ public class MainActivity extends AppCompatActivity {
             isLoad = true;
         }
 
-        if (RuleData.rules.isEmpty()) {
-            emptyTextLayout.setVisibility(View.VISIBLE);
-        } else {
-            adapter = new RuleAdapter(RuleData.rules, ruleList);
-            ruleList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
-            ruleList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
-            ruleList.setAdapter(adapter);
-        }
+
     }
 
     @Override
@@ -133,11 +127,16 @@ public class MainActivity extends AppCompatActivity {
         // Show the SnackBar when the alarm applied
         if (RuleData.rules.isEmpty()) {
             emptyTextLayout.setVisibility(View.VISIBLE);
+            if (adapter != null) {
+                adapter.notifyDataSetChanged();
+            }
         } else {
+            adapter = new RuleAdapter(RuleData.rules, ruleList);
+            ruleList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
+            ruleList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
+            ruleList.setAdapter(adapter);
             emptyTextLayout.setVisibility(View.GONE);
         }
-
-        adapter.notifyDataSetChanged();
 
         if (isRecentlyAdded) {
             String ruleSet = String.format(getString(R.string.rule_set), recentlyAddedName);
