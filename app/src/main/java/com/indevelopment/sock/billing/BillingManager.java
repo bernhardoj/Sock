@@ -1,6 +1,7 @@
 package com.indevelopment.sock.billing;
 
 import android.app.Activity;
+import android.os.Handler;
 import android.util.Log;
 import android.widget.Toast;
 
@@ -36,6 +37,8 @@ import java.util.Map;
  */
 public class BillingManager implements PurchasesUpdatedListener {
     private static final String TAG = "BillingManager";
+
+    private boolean show = true;
 
     /**
      * A reference to BillingClient
@@ -169,7 +172,7 @@ public class BillingManager implements PurchasesUpdatedListener {
                 e.printStackTrace();
             }
         } else {
-            Toast.makeText(mActivity, "No internet connection", Toast.LENGTH_SHORT).show();
+            displayToast("No internet connection");
             Log.e(TAG, "No internet connection!");
             querySkuDetails(skuList);
         }
@@ -241,7 +244,7 @@ public class BillingManager implements PurchasesUpdatedListener {
                     }
                 } else if (responseCode == BillingClient.BillingResponseCode.ITEM_ALREADY_OWNED) {
                     Log.d(TAG, billingResult.getDebugMessage());
-                    Toast.makeText(mActivity, "Item already owned", Toast.LENGTH_SHORT).show();
+                    displayToast("Item already owned");
                     queryPurchases();
                 } else if (responseCode == BillingClient.BillingResponseCode.USER_CANCELED) {
                     Log.i(TAG, "onPurchasesUpdated() - user cancelled the purchase flow - skipping");
@@ -342,5 +345,19 @@ public class BillingManager implements PurchasesUpdatedListener {
             mBillingClient.endConnection();
             mBillingClient = null;
         }
+    }
+
+    private void displayToast(String message) {
+        if (show) {
+            Toast.makeText(mActivity, message, Toast.LENGTH_SHORT).show();
+            show = false;
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                show = true;
+            }
+        }, 2000);
     }
 }

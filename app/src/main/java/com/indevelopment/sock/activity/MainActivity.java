@@ -221,10 +221,11 @@ public class MainActivity extends AppCompatActivity {
     public void onBackPressed() {
         if (isBackPressedTwice) {
             finish();
+        } else {
+            Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT).show();
         }
 
         isBackPressedTwice = true;
-        Toast.makeText(this, "Press Back again to exit", Toast.LENGTH_SHORT).show();
 
         new Handler().postDelayed(new Runnable() {
             @Override
