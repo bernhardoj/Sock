@@ -1,7 +1,6 @@
 package com.indevelopment.sock.activity;
 
 import android.app.TimePickerDialog;
-import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
