@@ -50,12 +50,12 @@ public class MainActivity extends AppCompatActivity {
 
     private static boolean isLoad = false;
 
-    boolean isBackPressedTwice = false;
+    private boolean isBackPressedTwice = false;
 
     public static RecyclerView ruleList;
-    LinearLayout emptyTextLayout;
+    private LinearLayout emptyTextLayout;
 
-    RuleAdapter adapter;
+    private RuleAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
