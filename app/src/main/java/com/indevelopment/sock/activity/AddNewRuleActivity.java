@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.app.AppCompatDelegate;
 
 import android.os.Bundle;
+import android.os.Handler;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -17,7 +18,6 @@ import android.widget.ArrayAdapter;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ScrollView;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
@@ -46,19 +46,20 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
 
     private static final String TAG = "AddNewRuleActivity";
 
-    boolean isEdit = false;
-    boolean[] actions;
-    int ruleIndex, mRequestCode;
+    private boolean show = true;
+
+    private boolean isEdit = false;
+    private boolean[] actions;
+    private int ruleIndex, mRequestCode;
     String[] dayArrays;
 
-    Spinner day;
+    private Spinner day;
     TimePickerDialog timePickerDialog;
-    TextInputEditText ruleName_edt, rule_startTime;
-    TextInputLayout ruleName_layout, rule_startTime_layout;
+    private TextInputEditText ruleName_edt, rule_startTime;
+    private TextInputLayout ruleName_layout, rule_startTime_layout;
 
-    CheckBox muteAll_cBox, shutDown_cBox, repeat_cBox;
-    TextView action_tv;
-    ScrollView scrollView;
+    private CheckBox muteAll_cBox, shutDown_cBox, repeat_cBox;
+    private TextView action_tv;
     LinearLayout actions_layout;
 
     Rule rule;
@@ -85,7 +86,6 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
         shutDown_cBox = findViewById(R.id.shutDown_cBox);
         repeat_cBox = findViewById(R.id.repeat_cBox);
         action_tv = findViewById(R.id.action_tv);
-        scrollView = findViewById(R.id.scrollView);
         actions_layout = findViewById(R.id.actions_layout);
 
         // Set the actions size based on total Action CheckBox available
@@ -330,8 +330,7 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 }
             }
         }
-
-        Toast.makeText(this, "You don't have root access", Toast.LENGTH_SHORT).show();
+        displayToast("You don't have root access");
         return false;
     }
 
@@ -351,8 +350,22 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                     process.destroy();
                 }
             }
-            Toast.makeText(this, "Please grant root access!", Toast.LENGTH_SHORT).show();
+            displayToast("Please grant root access!");
         }
         return false;
+    }
+
+    private void displayToast(String message) {
+        if (show) {
+            Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+            show = false;
+        }
+
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                show = true;
+            }
+        }, 2000);
     }
 }
