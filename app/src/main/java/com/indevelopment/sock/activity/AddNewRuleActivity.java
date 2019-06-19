@@ -243,10 +243,8 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                     MainActivity.isRecentlyAdded = true;
                     MainActivity.recentlyAddedName = ruleName;
 
-                    Intent intent = new Intent(this, MainActivity.class);
-                    intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    startActivity(intent);
                     finish();
+
                 } else {
                     Log.w(TAG, "Rule details is not valid");
                 }
@@ -257,9 +255,6 @@ public class AddNewRuleActivity extends AppCompatActivity implements View.OnClic
                 // Remove the alarm
                 Alarm.cancelAlarm(getApplicationContext(), mRequestCode);
 
-                Intent intent = new Intent(this, MainActivity.class);
-                intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                startActivity(intent);
                 finish();
                 Log.d(TAG, "Rule removed");
                 break;

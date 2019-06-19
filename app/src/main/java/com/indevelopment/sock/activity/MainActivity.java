@@ -55,6 +55,8 @@ public class MainActivity extends AppCompatActivity {
     public static RecyclerView ruleList;
     LinearLayout emptyTextLayout;
 
+    RuleAdapter adapter;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         // Check if a dark mode is already on in the settings
@@ -104,7 +106,6 @@ public class MainActivity extends AppCompatActivity {
                 }
                 intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
                 startActivity(intent);
-
             }
         });
 
@@ -119,13 +120,25 @@ public class MainActivity extends AppCompatActivity {
         if (RuleData.rules.isEmpty()) {
             emptyTextLayout.setVisibility(View.VISIBLE);
         } else {
-            final RuleAdapter adapter = new RuleAdapter(RuleData.rules, ruleList);
+            adapter = new RuleAdapter(RuleData.rules, ruleList);
             ruleList.addItemDecoration(new DividerItemDecoration(this, DividerItemDecoration.VERTICAL));
             ruleList.setLayoutManager(new LinearLayoutManager(MainActivity.this));
             ruleList.setAdapter(adapter);
         }
+    }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
         // Show the SnackBar when the alarm applied
+        if (RuleData.rules.isEmpty()) {
+            emptyTextLayout.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextLayout.setVisibility(View.GONE);
+        }
+
+        adapter.notifyDataSetChanged();
+
         if (isRecentlyAdded) {
             String ruleSet = String.format(getString(R.string.rule_set), recentlyAddedName);
             Snackbar.make(ruleList, ruleSet, Snackbar.LENGTH_SHORT).show();
