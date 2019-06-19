@@ -1,4 +1,5 @@
-# Sock
+Sock
+---
 Sock is kind of an automation app that can automatically do some actions based on the time you set. 
 You just need to set the rule, describes below:
   - Rule label
