@@ -1,4 +1,3 @@
----
 Privacy Policy
 ---
 InDevelopment built the Sock app as an Open Source app. This SERVICE is provided by InDevelopment at no cost and is intended for use as is.
