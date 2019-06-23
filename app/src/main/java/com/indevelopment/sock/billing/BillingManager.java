@@ -67,8 +67,6 @@ public class BillingManager implements PurchasesUpdatedListener {
      */
     private boolean mIsServiceConnected;
 
-    private boolean mIsNetworkAvailable;
-
     private final BillingUpdatesListener mBillingUpdatesListener;
 
     public BillingManager(final Activity activity, final BillingUpdatesListener billingUpdatesListener) {
@@ -114,11 +112,9 @@ public class BillingManager implements PurchasesUpdatedListener {
                     public void onSkuDetailsResponse(BillingResult billingResult, List<SkuDetails> skuDetailsList) {
                         if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.OK && skuDetailsList != null) {
                             mSkuDetails.addAll(skuDetailsList);
-                            mIsNetworkAvailable = true;
                             Log.d(TAG, "Querying SKU details elapsed time: " + (System.currentTimeMillis() - time)
                                     + "ms with List size: " + mSkuDetails.size());
                         } else if (billingResult.getResponseCode() == BillingClient.BillingResponseCode.SERVICE_UNAVAILABLE) {
-                            mIsNetworkAvailable = false;
                             Log.w(TAG, "Failed to querying SKU Details");
                         }
                     }
@@ -165,15 +161,10 @@ public class BillingManager implements PurchasesUpdatedListener {
      * Start a purchase flow
      */
     public void initiatePurchaseFlow(int index) {
-        if (mIsNetworkAvailable) {
-            try {
-                initiatePurchaseFlow(mSkuDetails.get(index), null);
-            } catch (IndexOutOfBoundsException e) {
-                e.printStackTrace();
-            }
-        } else {
-            displayToast("No internet connection");
-            Log.e(TAG, "No internet connection!");
+        try {
+            initiatePurchaseFlow(mSkuDetails.get(index), null);
+        } catch (IndexOutOfBoundsException e) {
+            displayToast("Item not available");
             querySkuDetails(skuList);
         }
     }
