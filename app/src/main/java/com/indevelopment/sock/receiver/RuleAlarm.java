@@ -1,7 +1,9 @@
 package com.indevelopment.sock.receiver;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -13,6 +15,7 @@ import android.util.Log;
 import androidx.core.app.NotificationCompat;
 import androidx.core.app.NotificationManagerCompat;
 
+import com.indevelopment.sock.Alarm;
 import com.indevelopment.sock.R;
 import com.indevelopment.sock.activity.AddNewRuleActivity;
 import com.indevelopment.sock.activity.MainActivity;
@@ -81,13 +84,30 @@ public class RuleAlarm extends BroadcastReceiver {
 
         notificationManager.notify(NOTIFICATION_ID, builder.build());
 
-        // Switch the switch off if not repeating
         if (!isRepeating) {
+            // Turn the switch off if not repeating
             RuleData.rules.get(ruleIndex).setSwitched(false);
             // Apply the switch effect in the RecyclerView List
             RuleAdapter adapter = (RuleAdapter) MainActivity.ruleList.getAdapter();
             if(adapter != null) {
                 MainActivity.ruleList.getAdapter().notifyDataSetChanged();
+            }
+        } else {
+            // Re-set the rule for Android >= KITKAT
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+                AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+                Intent alarmIntent = new Intent(context, RuleAlarm.class);
+
+                Log.d(TAG, "Alarm reset " + ruleName);
+                alarmIntent.putExtra(RuleAlarm.NOTIFICATION_NAME, ruleName);
+                alarmIntent.putExtra(RuleAlarm.NOTIFICATION_DETAIL, ruleStart);
+                alarmIntent.putExtra(RuleAlarm.REPEAT, true);
+                alarmIntent.putExtra(RuleAlarm.ACTIONS, ruleActions);
+                alarmIntent.putExtra(AddNewRuleActivity.RULE_INDEX, ruleIndex);
+
+                PendingIntent pendingIntent = PendingIntent.getBroadcast(context, RuleData.rules.get(ruleIndex).getRequestCode(), alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                alarmManager.setExact(AlarmManager.RTC, System.currentTimeMillis() + 7 * 24 * 60 * 60 * 1000, pendingIntent);
             }
         }
         /* Rule-related changes END here */

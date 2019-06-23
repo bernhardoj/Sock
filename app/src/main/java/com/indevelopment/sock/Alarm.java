@@ -4,7 +4,10 @@ import android.app.AlarmManager;
 import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
+import android.os.Build;
 import android.util.Log;
+
+import androidx.core.app.AlarmManagerCompat;
 
 import com.indevelopment.sock.activity.AddNewRuleActivity;
 import com.indevelopment.sock.data.RuleData;
@@ -56,13 +59,15 @@ public class Alarm {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, requestCode, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 
-        if (isRepeating) {
-            // Set the alarm to be fired every week on the selected day
-            alarmManager.setInexactRepeating(
-                    AlarmManager.RTC, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+        // Set the alarm to be fired every week on the selected day
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
+            alarmManager.setExact(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
         } else {
-            // Set the alarm to be fired once
-            alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            if (isRepeating) {
+                alarmManager.setRepeating(AlarmManager.RTC, calendar.getTimeInMillis(), 7 * 24 * 60 * 60 * 1000, pendingIntent);
+            } else {
+                alarmManager.set(AlarmManager.RTC, calendar.getTimeInMillis(), pendingIntent);
+            }
         }
     }
 
@@ -72,5 +77,6 @@ public class Alarm {
 
         PendingIntent pendingIntent = PendingIntent.getBroadcast(context, reqCode, intent, 0);
         alarmManager.cancel(pendingIntent);
+        Log.d(TAG, "Alarm cancelled");
     }
 }
